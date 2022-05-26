@@ -51,28 +51,37 @@ function Editor() {
   const [currentWidth, setCurrentWidth] = useState(20);
   const [Companyname, Setcompanyname] = useState("");
   const [Slogan, Setslogan] = useState("");
+  const [Categories, Setcategories] = useState([]);
+  const [Selected, setSelected] = useState([]);
+  const [Value, setValue] = useState([])
   
-  const options = [
-    { value: "re", label: "Restaurant" },
-    { value: "ed", label: "Education" },
-    { value: "fi", label: "Fitness" },
-    { value: "be", label: "Beauty" },
-    { value: "co", label: "Consulting" },
-    { value: "to", label: "Tourism" },
-    { value: "ag", label: "Agriculture" },
-    { value: "in", label: "Internet" },
-  ];
-  // const dataApiIntegration = async () => {
-  //   let url = await fetch(`https://fakestoreapi.com/products`);
-  //   let data = await url.json();
-  //   let response = data.filter((dat) => {
-  //     if (dat?.id % 2) {
-  //       return dat;
-  //     }
-  //   });
+  // const options = [
+  //   { value: "re", label: "Restaurant" },
+  //   { value: "ed", label: "Education" },
+  //   { value: "fi", label: "Fitness" },
+  //   { value: "be", label: "Beauty" },
+  //   { value: "co", label: "Consulting" },
+  //   { value: "to", label: "Tourism" },
+  //   { value: "ag", label: "Agriculture" },
+  //   { value: "in", label: "Internet" },
+  // ];
+ 
+  const CategoryApi = async () => {
+    const url = await fetch (`http://devv74.myprojectstaging.com/logo-master/public/api/categories`);
+    const data = await url.json();
+    const options =  data?.categories?.map((dat) => (
+      {
+        label: dat?.name,
+        value: dat?.id
+      }))
+      Setcategories(options)
+  }
+  
+  const handlechange = (e) => {
+    setSelected(e.label)
+    // console.log("sdaaaaaa",e.label)
+  }
 
-  //   Setlogo(response);
-  // };
   const handleNext = () => {
     let getCurrentWidth = currentWidth;   
     if (getCurrentWidth <= 100) {
@@ -112,9 +121,12 @@ function Editor() {
                   <div class="multiSelect-box">
                     <div class="form-group">
                       <Select
-                        options={options}
                         className="select2-hidden-accessible custom-select"
-                        placeholder="Select Category"
+                        placeholder="Select Business Category"
+                        value={Selected}
+                        options={Categories}
+                        onInputChange={(e) => handlechange(e)}
+                        
                       />
                     </div>
                   </div>
@@ -195,10 +207,15 @@ function Editor() {
     }
   };
   useEffect(() => {
+
+    CategoryApi();
+
     dispatch(toggleFooter());
     return () => {
       dispatch(toggleFooter());
     };
+
+   
   }, []);
 
   return (

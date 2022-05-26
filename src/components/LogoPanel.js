@@ -14,6 +14,7 @@ import Fontstyle from "./LogoPanel/Fontstyle";
 import FontWeight from "./LogoPanel/FontWeight";
 import GradientPalette from "./LogoPanel/GradientPalette";
 import IconSize from "./LogoPanel/IconSize";
+import LogoEditing from "./LogoPanel/LogoEditing";
 import SVGLogo from "./LogoPanel/SVGLogo";
 
 function LogoPanel() {
@@ -119,7 +120,7 @@ function LogoPanel() {
                 </button>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
               <div class="tab-content" id="v-pills-tabContent">
                 <div
                   class="tab-pane fade show active"
@@ -207,6 +208,15 @@ function LogoPanel() {
                 </div>
               </div>
             </div>
+            <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <div className="editor-col-3">
+                <div className ="gen-logo-sec">
+                  <div className ="generated-logo-preview generated-logo-preview1 generated-logo-preview-big">
+                      <LogoEditing />
+                  </div>
+                </div>
+              </div>
+              </div> 
           </div>
         </div>
       </div>
