@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Typography } from "@mui/material";
 import Select from "react-select";
+import makeAnimated from 'react-select/animated';
 import { toggleFooter } from "../store/action/webSettingAction";
 import Colors from "./Colors";
 import CompanyData from "./CompanyData";
@@ -25,6 +26,8 @@ import {
   customelogofifteen,
 } from "../images";
 
+const animatedComponents = makeAnimated();
+
 let images = [
   customelogofirst,
   customelogosecond,
@@ -46,14 +49,14 @@ function Editor() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [Active, Setactive] = useState(0);
-  const [logo, Setlogo] = useState([]);
+  const [logoimages, Setlogoimages] = useState([]);
   const [styles, Setstyles] = useState("");
   const [currentWidth, setCurrentWidth] = useState(20);
   const [Companyname, Setcompanyname] = useState("");
   const [Slogan, Setslogan] = useState("");
   const [Categories, Setcategories] = useState([]);
-  const [Selected, setSelected] = useState([]);
-  const [Value, setValue] = useState([])
+  const [Selected, setSelected] = useState(null);
+  
   
   // const options = [
   //   { value: "re", label: "Restaurant" },
@@ -77,11 +80,19 @@ function Editor() {
       Setcategories(options)
   }
   
-  const handlechange = (e) => {
-    setSelected(e.label)
-    // console.log("sdaaaaaa",e.label)
+  const handlechange = (Selected) => {
+    console.log(Selected)
+    return setSelected(Selected)
   }
 
+  const CategoriesByLogo = async (Selected) => {
+    let item = Selected?.value;
+    let url = await fetch(`https://devv74.myprojectstaging.com/logo-master/public/api/logos-by-category/${item}`)
+    let data = await url.json();
+    console.log("eeeeea",data)
+    Setlogoimages(data)
+  }
+ 
   const handleNext = () => {
     let getCurrentWidth = currentWidth;   
     if (getCurrentWidth <= 100) {
@@ -120,14 +131,20 @@ function Editor() {
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                   <div class="multiSelect-box">
                     <div class="form-group">
+                    
+                   
                       <Select
                         className="select2-hidden-accessible custom-select"
                         placeholder="Select Business Category"
+                        components={animatedComponents}
                         value={Selected}
                         options={Categories}
-                        onInputChange={(e) => handlechange(e)}
-                        
+                        onChange={(Selected) => {
+                          handlechange(Selected);  
+                          CategoriesByLogo(Selected);
+                        }}
                       />
+                    
                     </div>
                   </div>
                 </div>
@@ -145,7 +162,25 @@ function Editor() {
             <form className="logo-maker-form">
               <div className="catgImgWrap">
                 <div className="catgImg">
-                  {images &&
+                  {
+                    logoimages &&
+                    logoimages.length > 0 &&
+                    logoimages.map((data,index) => {
+                        return(
+                          <>
+                            <img 
+                            src={data?.logos}
+                            key={index}
+                            width={200}
+                            height={200}
+                            alt={"img.jpg"}
+                            />
+                          </>
+                        )
+                    })
+                  }
+
+                  {/* {images &&
                     images.length > 0 &&
                     images.map((data, index) => {
                       return (
@@ -163,7 +198,7 @@ function Editor() {
                           />
                         </>
                       );
-                    })}
+                    })} */}
                 </div>
               </div>
             </form>
@@ -208,7 +243,11 @@ function Editor() {
   };
   useEffect(() => {
 
-    CategoryApi();
+    (Active === 0) ?
+     CategoryApi() :
+      CategoriesByLogo();
+      
+   
 
     dispatch(toggleFooter());
     return () => {
