@@ -90,7 +90,7 @@ function Editor() {
     let url = await fetch(`https://devv74.myprojectstaging.com/logo-master/public/api/logos-by-category/${item}`)
     let data = await url.json();
     console.log("eeeeea",data)
-    Setlogoimages(data)
+    Setlogoimages(data?.data)
   }
  
   const handleNext = () => {
@@ -111,9 +111,9 @@ function Editor() {
       Setactive(Active - 1);
     }
   };
-  const handleimage = (e, data) => {
+  const handleimage = (e, dat) => {
     e.preventDefault();
-    Setstyles(data);
+    Setstyles(dat);
   };
   const StepsContent = (step) => {
     switch (step) {
@@ -162,19 +162,34 @@ function Editor() {
             <form className="logo-maker-form">
               <div className="catgImgWrap">
                 <div className="catgImg">
+                  {console.log("logoimages",logoimages)}
                   {
                     logoimages &&
-                    logoimages.length > 0 &&
-                    logoimages.map((data,index) => {
+                    logoimages?.length > 0 &&
+                    logoimages?.map((data) => {
                         return(
                           <>
-                            <img 
-                            src={data?.logos}
-                            key={index}
-                            width={200}
-                            height={200}
-                            alt={"img.jpg"}
-                            />
+                          {
+                            data?.logos &&
+                            data?.logos.length > 0 &&
+                            data?.logos.map((dat,ind) => {
+                              return(
+                                <> 
+                                   <img 
+                                      src={dat?.image}
+                                      key={ind}
+                                      width={200}
+                                      height={200}
+                                      alt={"img.jpg"}
+                                      onClick={(e) => handleimage(e, dat)}
+                                      className={
+                                        styles === dat ? 'imageactive' : 'imagenonactive'
+                                      }
+                                      />
+                                </>
+                              )
+                            })
+                          }
                           </>
                         )
                     })

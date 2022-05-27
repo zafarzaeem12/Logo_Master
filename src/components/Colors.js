@@ -1,6 +1,26 @@
-import React from "react";
+import React, { useState , useEffect } from "react";
 
-function colors() {
+function Colors() {
+
+  const [select, SetSelect] = useState([]);
+  const [checked, Setchecked] = useState([]);
+
+  const colorIntgration = async () => {
+    const url = await fetch(`https://devv74.myprojectstaging.com/logo-master/public/api/colors`);
+    const data = await url.json();
+    SetSelect(data?.colors);
+  }
+  
+  const handleChange = (e,data) => {
+    e.preventDefault();
+    Setchecked(data?.id)
+    // console.log("fffff",data?.id)
+  }
+
+  useEffect(()=>{
+    colorIntgration();
+  },[])
+
   return (
     <>
       <div class="create-text-1">
@@ -9,102 +29,29 @@ function colors() {
         </p>
         <p>Colors help convey emotion in your logo</p>
       </div>
-      <form class="logo-maker-form">
-        <div class="color-selection-wrap">
-          <div class="color-item">
-            <input type="checkbox" />
-            <span class="blue">
-              <p>Blue</p>
-              <p class="color-detail">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </p>
-            </span>
-          </div>
-          <div class="color-item">
-            <input type="checkbox" />
-            <span class="purple">
-              <p>Purple</p>
-              <p class="color-detail">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </p>
-            </span>
-          </div>
-          <div class="color-item">
-            <input type="checkbox" />
-            <span class="pink">
-              <p>Pink</p>
-              <p class="color-detail">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </p>
-            </span>
-          </div>
-          <div class="color-item">
-            <input type="checkbox" />
-            <span class="red">
-              <p>Red</p>
-              <p class="color-detail">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </p>
-            </span>
-          </div>
-          <div class="color-item">
-            <input type="checkbox" />
-            <span class="orange">
-              <p>Orange</p>
-              <p class="color-detail">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </p>
-            </span>
-          </div>
-          <div class="color-item">
-            <input type="checkbox" />
-            <span class="green">
-              <p>Green</p>
-              <p class="color-detail">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </p>
-            </span>
-          </div>
-          <div class="color-item">
-            <input type="checkbox" />
-            <span class="yellow">
-              <p>Yellow</p>
-              <p class="color-detail">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </p>
-            </span>
-          </div>
-          <div class="color-item">
-            <input type="checkbox" />
-            <span class="teal">
-              <p>Teal</p>
-              <p class="color-detail">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </p>
-            </span>
-          </div>
-          <div class="color-item">
-            <input type="checkbox" />
-            <span class="greyscale">
-              <p>Greyscale</p>
-              <p class="color-detail">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </p>
-            </span>
-          </div>
+      {console.log("checkedchecked",checked)}
+      <form className="logo-maker-form">
+          <div className="color-selection-wrap">
+              {
+                select &&
+                select.length > 0 &&
+                select.map((data , index) => (
+                  <div key={index} className="color-item">
+                    <input  type="checkbox" value={checked} onChange={(e) => handleChange(e, data)} />
+                    <span className={data?.name}>
+                      <p>{data?.name}</p>
+                      <p className="color-detail">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting
+                        industry.
+                      </p>
+                    </span>
+                  </div>
+                ))
+              }
         </div>
       </form>
     </>
   );
 }
 
-export default colors;
+export default Colors;
