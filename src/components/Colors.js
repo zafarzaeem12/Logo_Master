@@ -4,11 +4,15 @@ function Colors() {
 
   const [select, SetSelect] = useState([]);
   const [checked, Setchecked] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   const colorIntgration = async () => {
     const url = await fetch(`https://devv74.myprojectstaging.com/logo-master/public/api/colors`);
     const data = await url.json();
     SetSelect(data?.colors);
+    setIsLoading(false)
+  
   }
   
   const handleChange = (e,data) => {
@@ -21,6 +25,7 @@ function Colors() {
     colorIntgration();
   },[])
 
+  
   return (
     <>
       <div class="create-text-1">
@@ -29,10 +34,10 @@ function Colors() {
         </p>
         <p>Colors help convey emotion in your logo</p>
       </div>
-      {console.log("checkedchecked",checked)}
       <form className="logo-maker-form">
           <div className="color-selection-wrap">
-              {
+            {
+              !isLoading ? (
                 select &&
                 select.length > 0 &&
                 select.map((data , index) => (
@@ -47,7 +52,18 @@ function Colors() {
                     </span>
                   </div>
                 ))
-              }
+
+              ) : (
+                <>
+                  <div className="spinner-container">
+                     <div className="loading-spinner">
+
+                        </div>
+                    </div>
+                </>
+              )
+            }
+           
         </div>
       </form>
     </>
