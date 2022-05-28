@@ -56,6 +56,7 @@ function Editor() {
   const [Slogan, Setslogan] = useState("");
   const [Categories, Setcategories] = useState([]);
   const [Selected, setSelected] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   
   // const options = [
@@ -91,6 +92,7 @@ function Editor() {
     let data = await url.json();
     console.log("eeeeea",data)
     Setlogoimages(data?.data)
+    setIsLoading(false)
   }
  
   const handleNext = () => {
@@ -163,7 +165,8 @@ function Editor() {
               <div className="catgImgWrap">
                 <div className="catgImg">
                   {console.log("logoimages",logoimages)}
-                  {
+                  { !isLoading ?
+                  (
                     logoimages &&
                     logoimages?.length > 0 &&
                     logoimages?.map((data) => {
@@ -193,7 +196,13 @@ function Editor() {
                           </>
                         )
                     })
-                  }
+                  ) : (
+                     <div className="spinner-container">
+                       <div className="loading-spinner">
+
+                        </div>
+                      </div>
+                  ) }
 
                   {/* {images &&
                     images.length > 0 &&
