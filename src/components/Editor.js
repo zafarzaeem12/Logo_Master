@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Typography } from "@mui/material";
@@ -57,18 +57,11 @@ function Editor() {
   const [Categories, Setcategories] = useState([]);
   const [Selected, setSelected] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [select, SetSelect] = useState([]);
+  const [checked, Setchecked] = useState(false);
+  console.log("uuuuu",checked)
   
-  
-  // const options = [
-  //   { value: "re", label: "Restaurant" },
-  //   { value: "ed", label: "Education" },
-  //   { value: "fi", label: "Fitness" },
-  //   { value: "be", label: "Beauty" },
-  //   { value: "co", label: "Consulting" },
-  //   { value: "to", label: "Tourism" },
-  //   { value: "ag", label: "Agriculture" },
-  //   { value: "in", label: "Internet" },
-  // ];
+ 
  
   const CategoryApi = async () => {
     const url = await fetch (`http://devv74.myprojectstaging.com/logo-master/public/api/categories`);
@@ -90,10 +83,17 @@ function Editor() {
     let item = Selected?.value;
     let url = await fetch(`https://devv74.myprojectstaging.com/logo-master/public/api/logos-by-category/${item}`)
     let data = await url.json();
-    console.log("eeeeea",data)
     Setlogoimages(data?.data)
     setIsLoading(false)
   }
+  const colorIntgration = async () => {
+    const url = await fetch(`https://devv74.myprojectstaging.com/logo-master/public/api/colors`);
+    const data = await url.json();
+    SetSelect(data?.colors);
+    setIsLoading(false)
+  
+  }
+  
  
   const handleNext = () => {
     let getCurrentWidth = currentWidth;   
@@ -113,10 +113,35 @@ function Editor() {
       Setactive(Active - 1);
     }
   };
-  const handleimage = (e, dat) => {
-    e.preventDefault();
-    Setstyles(dat);
+   const handleimage = (e, dat) => {
+    //  e.preventDefault();
+     console.log("sssq",dat)
+     Setstyles(dat);
+    
+    
   };
+  const handleColorChange = (e,data) => {
+    // e.preventDefault();
+    console.log("fffff",checked)
+    Setchecked(data)
+  }
+
+ 
+ 
+
+  const DataByCategory = (Selected , styles ,checked ) => {
+    let CategoryId = Selected?.value  
+    let LogoId = styles?.id
+    let datas = checked?.id
+ 
+    console.log("checkeded",datas)
+    console.log("CategoryId", CategoryId)
+    console.log("LogoIds",LogoId ) 
+  }
+
+
+
+
   const StepsContent = (step) => {
     switch (step) {
       case 0:
@@ -144,6 +169,7 @@ function Editor() {
                         onChange={(Selected) => {
                           handlechange(Selected);  
                           CategoriesByLogo(Selected);
+                          DataByCategory(Selected);
                         }}
                       />
                     
@@ -164,8 +190,7 @@ function Editor() {
             <form className="logo-maker-form">
               <div className="catgImgWrap">
                 <div className="catgImg">
-                  {console.log("logoimages",logoimages)}
-                  { !isLoading ?
+                { !isLoading ?
                   (
                     logoimages &&
                     logoimages?.length > 0 &&
@@ -184,7 +209,11 @@ function Editor() {
                                       width={200}
                                       height={200}
                                       alt={"img.jpg"}
-                                      onClick={(e) => handleimage(e, dat)}
+                                      onClick={(e) =>{ 
+                                        handleimage(e, dat);
+                                        DataByCategory(e, dat);
+                                      }
+                                      }
                                       className={
                                         styles === dat ? 'imageactive' : 'imagenonactive'
                                       }
@@ -231,7 +260,65 @@ function Editor() {
       case 2:
         return (
           <>
-            <Colors />
+            {/* <Colors 
+              select={select}
+              SetSelect={SetSelect}
+              checked={checked}
+              Setchecked={Setchecked}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              
+            /> */}
+
+
+                        <div class="create-text-1">
+                    <p class="heading title-font">
+                      Pick Some Colors <span>You Like</span>
+                    </p>
+                    <p>Colors help convey emotion in your logo</p>
+                  </div>
+                  {console.log("********",checked)}
+                  <form className="logo-maker-form">
+                      <div className="color-selection-wrap">
+                        {
+                          !isLoading ? (
+                            select &&
+                            select.length > 0 &&
+                            select.map((data , index) => (
+                              <div key={index} className="color-item">
+                                <input  
+                                  type="checkbox" 
+                                  value={checked} 
+                                  onChange={(e) => { 
+                                    handleColorChange(e, data);
+                                    DataByCategory(data);
+                                   }
+                                    }
+                                />
+                                <span className={data?.name}>
+                                  <p>{data?.name}</p>
+                                  <p className="color-detail">
+                                    Lorem Ipsum is simply dummy text of the printing and typesetting
+                                    industry.
+                                  </p>
+                                </span>
+                              </div>
+                            ))
+
+                          ) : (
+                            <>
+                              <div className="spinner-container">
+                                <div className="loading-spinner">
+
+                                    </div>
+                                </div>
+                             </>
+                                )
+                              }
+                            
+                          </div>
+                        </form>
+
           </>
         );
       case 3:
@@ -267,10 +354,11 @@ function Editor() {
   };
   useEffect(() => {
 
-    (Active === 0) ?
-     CategoryApi() :
+    
+     CategoryApi();
       CategoriesByLogo();
-      
+      colorIntgration();
+
    
 
     dispatch(toggleFooter());
