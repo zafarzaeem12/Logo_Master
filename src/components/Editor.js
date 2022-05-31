@@ -59,6 +59,7 @@ function Editor() {
   const [isLoading, setIsLoading] = useState(true);
   const [select, SetSelect] = useState([]);
   const [checked, Setchecked] = useState(false);
+  
   console.log("uuuuu",checked)
   
  
@@ -93,6 +94,15 @@ function Editor() {
     setIsLoading(false)
   
   }
+
+  // const colorIntgration = async (styles) => {
+  //  let logocolor = styles?.id;
+  //   const url = await fetch(`https://devv74.myprojectstaging.com/logo-master/public/api/colors/${logocolor}`);
+  //   const data = await url.json();
+  //   SetSelect(data?.colors);
+  //   setIsLoading(false)
+  
+  // }
   
  
   const handleNext = () => {
@@ -122,21 +132,21 @@ function Editor() {
   };
   const handleColorChange = (e,data) => {
     // e.preventDefault();
-    console.log("fffff",checked)
-    Setchecked(data)
+    console.log("fffff",e.target.checked,data)
+    Setchecked(e?.target?.value,data)
   }
 
- 
+  
  
 
-  const DataByCategory = (Selected , styles ,checked ) => {
-    let CategoryId = Selected?.value  
-    let LogoId = styles?.id
-    let datas = checked?.id
+  const DataByCategory = (Selected,styles,checked  ) => {
+    let category_id = Selected?.value  
+    let logo_id  = styles?.id
+    let color_id  = checked
  
-    console.log("checkeded",datas)
-    console.log("CategoryId", CategoryId)
-    console.log("LogoIds",LogoId ) 
+    console.log("color_id ",color_id)
+    console.log("category_id", category_id)
+    console.log("logo_id",logo_id ) 
   }
 
 
@@ -292,6 +302,7 @@ function Editor() {
                                   onChange={(e) => { 
                                     handleColorChange(e, data);
                                     DataByCategory(data);
+                                 
                                    }
                                     }
                                 />
@@ -354,10 +365,12 @@ function Editor() {
   };
   useEffect(() => {
 
-    
+  
      CategoryApi();
       CategoriesByLogo();
-      colorIntgration();
+      colorIntgration(); 
+  
+
 
    
 
