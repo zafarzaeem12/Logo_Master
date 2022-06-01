@@ -1,0 +1,1 @@
+export const colorsByLogo = "colors-by-logo";

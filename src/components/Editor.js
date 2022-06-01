@@ -1,9 +1,9 @@
-import React, { useState, useEffect ,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Typography } from "@mui/material";
 import Select from "react-select";
-import makeAnimated from 'react-select/animated';
+import makeAnimated from "react-select/animated";
 import { toggleFooter } from "../store/action/webSettingAction";
 import Colors from "./Colors";
 import CompanyData from "./CompanyData";
@@ -25,6 +25,8 @@ import {
   customelogofourteen,
   customelogofifteen,
 } from "../images";
+import { colorsByLogo } from "../services/api";
+import { getApi } from "../services/functions";
 
 const animatedComponents = makeAnimated();
 
@@ -58,55 +60,46 @@ function Editor() {
   const [Selected, setSelected] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [select, SetSelect] = useState([]);
-  const [checked, Setchecked] = useState(false);
-  
-  console.log("uuuuu",checked)
-  
- 
- 
+  const [printchecked, Setprintchecked] = useState([]);
+
   const CategoryApi = async () => {
-    const url = await fetch (`http://devv74.myprojectstaging.com/logo-master/public/api/categories`);
+    const url = await fetch(
+      `http://devv74.myprojectstaging.com/logo-master/public/api/categories`
+    );
     const data = await url.json();
-    const options =  data?.categories?.map((dat) => (
-      {
-        label: dat?.name,
-        value: dat?.id
-      }))
-      Setcategories(options)
-  }
-  
-  const handlechange = (Selected) => {
-    console.log(Selected)
-    return setSelected(Selected)
-  }
+    const options = data?.categories?.map((dat) => ({
+      label: dat?.name,
+      value: dat?.id,
+    }));
+    Setcategories(options);
+  };
 
   const CategoriesByLogo = async (Selected) => {
     let item = Selected?.value;
-    let url = await fetch(`https://devv74.myprojectstaging.com/logo-master/public/api/logos-by-category/${item}`)
+    let url = await fetch(
+      `https://devv74.myprojectstaging.com/logo-master/public/api/logos-by-category/${item}`
+    );
     let data = await url.json();
-    Setlogoimages(data?.data)
-    setIsLoading(false)
-  }
-  const colorIntgration = async () => {
-    const url = await fetch(`https://devv74.myprojectstaging.com/logo-master/public/api/colors`);
-    const data = await url.json();
-    SetSelect(data?.colors);
-    setIsLoading(false)
-  
-  }
+    Setlogoimages(data?.data);
+    setIsLoading(false);
+  };
+  const colorIntgration = async (dat) => {
+    let logocolor = dat?.id;
+    let url = await fetch(
+      `https://devv74.myprojectstaging.com/logo-master/public/api/colors-by-logo/${logocolor}`
+    );
+    const { data } = await url.json();
+    SetSelect(data[0]?.colors);
+    setIsLoading(false);
+  };
 
-  // const colorIntgration = async (styles) => {
-  //  let logocolor = styles?.id;
-  //   const url = await fetch(`https://devv74.myprojectstaging.com/logo-master/public/api/colors/${logocolor}`);
-  //   const data = await url.json();
-  //   SetSelect(data?.colors);
-  //   setIsLoading(false)
-  
-  // }
-  
- 
+  const handlechange = (Selected) => {
+    console.log(Selected);
+    return setSelected(Selected);
+  };
+
   const handleNext = () => {
-    let getCurrentWidth = currentWidth;   
+    let getCurrentWidth = currentWidth;
     if (getCurrentWidth <= 100) {
       setCurrentWidth(getCurrentWidth + 20);
       if (Active === 4) {
@@ -123,35 +116,30 @@ function Editor() {
       Setactive(Active - 1);
     }
   };
-   const handleimage = (e, dat) => {
+  const handleimage = (e, dat) => {
     //  e.preventDefault();
-     console.log("sssq",dat)
-     Setstyles(dat);
-    
-    
+    Setstyles(dat);
   };
-  const handleColorChange = (e,data) => {
+
+  const handleColorChange = (e, data) => {
     // e.preventDefault();
-    console.log("fffff",e.target.checked,data)
-    Setchecked(e?.target?.value,data)
-  }
+    return Setprintchecked(data);
+  };
+
+
+  const DataByCategory = (Selected, styles, printchecked ,Companyname ,Slogan) => {
+    let category_id = Selected?.value;
+    let logo_id = styles?.id;
+    let color_id = printchecked?.id
+   
+    console.log("category_id", category_id);
+    console.log("logo_id", logo_id);
+    console.log("color_id", color_id);
+    console.log("CompanyName",Companyname)
+    console.log("Slogan",Slogan)
+  };
 
   
- 
-
-  const DataByCategory = (Selected,styles,checked  ) => {
-    let category_id = Selected?.value  
-    let logo_id  = styles?.id
-    let color_id  = checked
- 
-    console.log("color_id ",color_id)
-    console.log("category_id", category_id)
-    console.log("logo_id",logo_id ) 
-  }
-
-
-
-
   const StepsContent = (step) => {
     switch (step) {
       case 0:
@@ -168,8 +156,6 @@ function Editor() {
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                   <div class="multiSelect-box">
                     <div class="form-group">
-                    
-                   
                       <Select
                         className="select2-hidden-accessible custom-select"
                         placeholder="Select Business Category"
@@ -177,12 +163,11 @@ function Editor() {
                         value={Selected}
                         options={Categories}
                         onChange={(Selected) => {
-                          handlechange(Selected);  
+                          handlechange(Selected);
                           CategoriesByLogo(Selected);
                           DataByCategory(Selected);
                         }}
                       />
-                    
                     </div>
                   </div>
                 </div>
@@ -200,48 +185,45 @@ function Editor() {
             <form className="logo-maker-form">
               <div className="catgImgWrap">
                 <div className="catgImg">
-                { !isLoading ?
-                  (
+                  {!isLoading ? (
                     logoimages &&
                     logoimages?.length > 0 &&
                     logoimages?.map((data) => {
-                        return(
-                          <>
-                          {
-                            data?.logos &&
+                      return (
+                        <>
+                          {data?.logos &&
                             data?.logos.length > 0 &&
-                            data?.logos.map((dat,ind) => {
-                              return(
-                                <> 
-                                   <img 
-                                      src={dat?.image}
-                                      key={ind}
-                                      width={200}
-                                      height={200}
-                                      alt={"img.jpg"}
-                                      onClick={(e) =>{ 
-                                        handleimage(e, dat);
-                                        DataByCategory(e, dat);
-                                      }
-                                      }
-                                      className={
-                                        styles === dat ? 'imageactive' : 'imagenonactive'
-                                      }
-                                      />
+                            data?.logos.map((dat, ind) => {
+                              return (
+                                <>
+                                  <img
+                                    src={dat?.image}
+                                    key={ind}
+                                    width={200}
+                                    height={200}
+                                    alt={"img.jpg"}
+                                    onClick={(e) => {
+                                      handleimage(e, dat);
+                                      colorIntgration(dat);
+                                      DataByCategory(e, dat);
+                                    }}
+                                    className={
+                                      styles === dat
+                                        ? "imageactive"
+                                        : "imagenonactive"
+                                    }
+                                  />
                                 </>
-                              )
-                            })
-                          }
-                          </>
-                        )
+                              );
+                            })}
+                        </>
+                      );
                     })
                   ) : (
-                     <div className="spinner-container">
-                       <div className="loading-spinner">
-
-                        </div>
-                      </div>
-                  ) }
+                    <div className="spinner-container">
+                      <div className="loading-spinner"></div>
+                    </div>
+                  )}
 
                   {/* {images &&
                     images.length > 0 &&
@@ -280,56 +262,47 @@ function Editor() {
               
             /> */}
 
-
-                        <div class="create-text-1">
-                    <p class="heading title-font">
-                      Pick Some Colors <span>You Like</span>
-                    </p>
-                    <p>Colors help convey emotion in your logo</p>
-                  </div>
-                  {console.log("********",checked)}
-                  <form className="logo-maker-form">
-                      <div className="color-selection-wrap">
-                        {
-                          !isLoading ? (
-                            select &&
-                            select.length > 0 &&
-                            select.map((data , index) => (
-                              <div key={index} className="color-item">
-                                <input  
-                                  type="checkbox" 
-                                  value={checked} 
-                                  onChange={(e) => { 
-                                    handleColorChange(e, data);
-                                    DataByCategory(data);
-                                 
-                                   }
-                                    }
-                                />
-                                <span className={data?.name}>
-                                  <p>{data?.name}</p>
-                                  <p className="color-detail">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                                    industry.
-                                  </p>
-                                </span>
-                              </div>
-                            ))
-
-                          ) : (
-                            <>
-                              <div className="spinner-container">
-                                <div className="loading-spinner">
-
-                                    </div>
-                                </div>
-                             </>
-                                )
-                              }
-                            
-                          </div>
-                        </form>
-
+            <div class="create-text-1">
+              <p class="heading title-font">
+                Pick Some Colors <span>You Like</span>
+              </p>
+              <p>Colors help convey emotion in your logo</p>
+            </div>
+            <form className="logo-maker-form">
+              <div className="color-selection-wrap">
+                {!isLoading ? (
+                  select &&
+                  select.length > 0 &&
+                  select.map((data, index) => {
+                    return (
+                      <div key={index} className="color-item">
+                        <input
+                          type="checkbox"
+                          value={printchecked}
+                          onChange={(e) => {
+                            handleColorChange(e, data);
+                            DataByCategory(null, null, data);
+                          }}
+                        />
+                        <span className={data?.name}>
+                          <p>{data?.name}</p>
+                          <p className="color-detail">
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry.
+                          </p>
+                        </span>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <>
+                    <div className="spinner-container">
+                      <div className="loading-spinner"></div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </form>
           </>
         );
       case 3:
@@ -346,13 +319,12 @@ function Editor() {
       case 4:
         return (
           <>
-            <LogoCustomization 
-              name={Companyname} 
+            <LogoCustomization
+              name={Companyname}
               slogan={Slogan}
               active={Active}
               setactive={Setactive}
-              
-              />
+            />
           </>
         );
       default:
@@ -364,22 +336,12 @@ function Editor() {
     }
   };
   useEffect(() => {
-
-  
-     CategoryApi();
-      CategoriesByLogo();
-      colorIntgration(); 
-  
-
-
-   
-
+    CategoryApi();
+    CategoriesByLogo();
     dispatch(toggleFooter());
     return () => {
       dispatch(toggleFooter());
     };
-
-   
   }, []);
 
   return (
