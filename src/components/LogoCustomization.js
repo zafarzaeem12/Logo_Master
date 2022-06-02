@@ -12,21 +12,29 @@ import {
 
 
 
-const images = [
-  customfirstsvg,
-  customsecondsvg,
-  customthirdsvg,
-  customfourthsvg,
-  customfifthsvg,
-  customsixthsvg,
-];
+// const images = [
+//   customfirstsvg,
+//   customsecondsvg,
+//   customthirdsvg,
+//   customfourthsvg,
+//   customfifthsvg,
+//   customsixthsvg,
+// ];
+
 function LogoCustomization({ name, slogan }) {
   const navigate = useNavigate();
   const [styles, Setstyles] = useState("");
+  const [images , Setimages] = useState([]);
   const [datas , SetDatas] = useState([images]);
   const [text , SetText] = useState([name,slogan])
 
 
+  const GetSelectedLogo =  async () => {
+    let url =  await fetch(`https://devv74.myprojectstaging.com/logo-master/public/api/get-selected-logos`)
+    let data = await url.json()
+    Setimages(data?.data)
+    console.log("sss",data?.data)
+  }
  
 
   const handleselect = (e, data) => {
@@ -39,9 +47,9 @@ function LogoCustomization({ name, slogan }) {
 
   };
   
-  // useEffect(() => {
-  //   dataApiIntegration();
-  // }, []);
+  useEffect(() => {
+    GetSelectedLogo();
+  }, []);
   return (
     <>
       <div className="create-text-1">
@@ -61,8 +69,8 @@ function LogoCustomization({ name, slogan }) {
                   <>
                     <div className="gen-logo-box generated-logo-preview">
                       <div className="textshow-sect">
-                        <p className="textshow">{name}</p>
-                        <p className="textshow">{slogan}</p>
+                        <p className="textshow">{data?.company_name}</p>
+                        <p className="textshow">{data?.company_slogan}</p>
                       </div>
                       <img
                         src={data}

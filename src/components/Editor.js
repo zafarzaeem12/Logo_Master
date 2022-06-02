@@ -50,6 +50,7 @@ let images = [
   customelogofourteen,
   customelogofifteen,
 ];
+
 function Editor() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -64,7 +65,7 @@ function Editor() {
   const [isLoading, setIsLoading] = useState(true);
   const [select, SetSelect] = useState([]);
   const [printchecked, Setprintchecked] = useState([]);
-
+  
   const CategoryApi = async () => {
     const url = await fetch(
       `http://devv74.myprojectstaging.com/logo-master/public/api/categories`
@@ -154,10 +155,10 @@ function Editor() {
           headers: { "Content-type": "application/json; charset=UTF-8" },
           body:JSON.stringify(payload)
         }
-      let api = await  fetch(url,methods)
-      let response = await api.json();
+      const api = await  fetch(url,methods)
+      const response = await api.json();
+      toast.success(response)
         console.log("response",response)
-      toast.success(response);
      
 
      
