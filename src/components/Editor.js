@@ -6,6 +6,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { toggleFooter } from "../store/action/webSettingAction";
 import Colors from "./Colors";
+import Axios from 'axios';
 import CompanyData from "./CompanyData";
 import LogoCustomization from "./LogoCustomization";
 import {
@@ -127,18 +128,42 @@ function Editor() {
   };
 
 
-  const DataByCategory = (Selected, styles, printchecked ,Companyname ,Slogan) => {
-    let category_id = Selected?.value;
-    let logo_id = styles?.id;
-    let color_id = printchecked?.id
-   
-    console.log("category_id", category_id);
-    console.log("logo_id", logo_id);
-    console.log("color_id", color_id);
-    console.log("CompanyName",Companyname)
-    console.log("Slogan",Slogan)
+  const DataByCategory = async (Selected,styles,printchecked,Companyname ,Slogan,) => {
+    try{
+        var category_id = Selected?.value;
+        var logo_id = styles?.id;
+        var color_id = printchecked?.id;
+        var company_name = Companyname ;
+        var company_slogan = Slogan;
+        
+      const payload = {
+        category_id,
+        logo_id,
+        color_id,
+        company_name,
+        company_slogan
+      }
+        console.log("payload",payload)
+
+        let url = `https://devv74.myprojectstaging.com/logo-master/public/api/selected-logos`;
+        
+        let methods  = {
+          method: "POST",
+          headers: { "Content-type": "application/json; charset=UTF-8" },
+          body:JSON.stringify(payload)
+        }
+      let api = await  fetch(url,methods)
+      let response = await api.json();
+      console.log("response",response)
+
+     
+    }
+    catch(error){
+      console.log("Error is Coming")
+    }
   };
 
+  
   
   const StepsContent = (step) => {
     switch (step) {
@@ -165,7 +190,9 @@ function Editor() {
                         onChange={(Selected) => {
                           handlechange(Selected);
                           CategoriesByLogo(Selected);
-                          DataByCategory(Selected);
+                          
+                           DataByCategory(Selected);
+                          
                         }}
                       />
                     </div>
@@ -205,7 +232,9 @@ function Editor() {
                                     onClick={(e) => {
                                       handleimage(e, dat);
                                       colorIntgration(dat);
-                                      DataByCategory(e, dat);
+                                     
+                                      DataByCategory(Selected, dat); 
+                                    
                                     }}
                                     className={
                                       styles === dat
@@ -281,7 +310,9 @@ function Editor() {
                           value={printchecked}
                           onChange={(e) => {
                             handleColorChange(e, data);
-                            DataByCategory(null, null, data);
+                           
+                               DataByCategory(Selected, styles, data);
+                          
                           }}
                         />
                         <span className={data?.name}>
@@ -313,6 +344,13 @@ function Editor() {
               slogan={Slogan}
               setName={Setcompanyname}
               setCompanySlogan={Setslogan}
+              DataByCategory={DataByCategory}
+              Selected={Selected}
+              styles={styles}
+              printchecked={printchecked}
+              Active={Active}
+              
+             
             />
           </>
         );
@@ -335,6 +373,8 @@ function Editor() {
         );
     }
   };
+
+
   useEffect(() => {
     CategoryApi();
     CategoriesByLogo();

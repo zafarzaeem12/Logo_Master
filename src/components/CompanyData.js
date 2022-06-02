@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
 import CompanyDataHeader from "./CompanyDataHeader";
 
-function CompanyData({ name, slogan, setName, setCompanySlogan }) {
+function CompanyData({ name, slogan, setName, setCompanySlogan ,DataByCategory,Selected, styles, printchecked ,Active }) {
+
   const formRef = useRef();
   const handleCompanyName = (e) => {
     setName(e.target.value);
@@ -11,6 +12,8 @@ function CompanyData({ name, slogan, setName, setCompanySlogan }) {
   };
   const handlechange = (e) => {
     e.preventDefault();
+    
+
   };
   const handlekeydown = (ev) => {
     if (ev.keyCode === 65) {
@@ -31,7 +34,14 @@ function CompanyData({ name, slogan, setName, setCompanySlogan }) {
                   type="text"
                   placeholder="Company Name"
                   value={name}
-                  onChange={handleCompanyName}
+                  onChange={(e) => { 
+                                      handleCompanyName(e);
+                                     
+                                      DataByCategory(Selected, styles, printchecked,name);
+                                   
+                                      
+                                    }
+                            }
                   className="logo-name"
                   name="Companyname"
                 />
@@ -43,7 +53,15 @@ function CompanyData({ name, slogan, setName, setCompanySlogan }) {
                   type="text"
                   placeholder="Add a Slogan (Optional)"
                   value={slogan}
-                  onChange={handleCompanySlogan}
+                  onChange={(e) => {
+                    handleCompanySlogan(e);
+
+                    
+                       DataByCategory(Selected, styles, printchecked,name,slogan); 
+                  
+                    
+                  }
+                  } 
                   className="logo-slogan"
                   name="slogan"
                 />
