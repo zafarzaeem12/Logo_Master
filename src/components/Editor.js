@@ -5,6 +5,8 @@ import { Typography } from "@mui/material";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { toggleFooter } from "../store/action/webSettingAction";
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import Colors from "./Colors";
 import Axios from 'axios';
 import CompanyData from "./CompanyData";
@@ -154,12 +156,15 @@ function Editor() {
         }
       let api = await  fetch(url,methods)
       let response = await api.json();
-      console.log("response",response)
+        console.log("response",response)
+      toast.success(response);
+     
 
      
     }
     catch(error){
-      console.log("Error is Coming")
+      toast.error("Something is Missing")
+      
     }
   };
 
@@ -190,8 +195,10 @@ function Editor() {
                         onChange={(Selected) => {
                           handlechange(Selected);
                           CategoriesByLogo(Selected);
-                          
-                           DataByCategory(Selected);
+                          if(Active === 3) {
+                            return DataByCategory(Selected);
+                          }
+                           
                           
                         }}
                       />
@@ -232,9 +239,9 @@ function Editor() {
                                     onClick={(e) => {
                                       handleimage(e, dat);
                                       colorIntgration(dat);
-                                     
-                                      DataByCategory(Selected, dat); 
-                                    
+                                      if(Active === 3) {
+                                       return  DataByCategory(Selected, dat); 
+                                      }
                                     }}
                                     className={
                                       styles === dat
@@ -310,9 +317,9 @@ function Editor() {
                           value={printchecked}
                           onChange={(e) => {
                             handleColorChange(e, data);
-                           
-                               DataByCategory(Selected, styles, data);
-                          
+                            if(Active === 3) {
+                             return   DataByCategory(Selected, styles, data);
+                            }
                           }}
                         />
                         <span className={data?.name}>

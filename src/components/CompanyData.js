@@ -36,9 +36,9 @@ function CompanyData({ name, slogan, setName, setCompanySlogan ,DataByCategory,S
                   value={name}
                   onChange={(e) => { 
                                       handleCompanyName(e);
-                                     
-                                      DataByCategory(Selected, styles, printchecked,name);
-                                   
+                                  
+                                        DataByCategory(Selected, styles, printchecked,name);
+                                      
                                       
                                     }
                             }
@@ -56,9 +56,9 @@ function CompanyData({ name, slogan, setName, setCompanySlogan ,DataByCategory,S
                   onChange={(e) => {
                     handleCompanySlogan(e);
 
-                    
-                       DataByCategory(Selected, styles, printchecked,name,slogan); 
-                  
+                 
+                     DataByCategory(Selected, styles, printchecked,name,slogan); 
+                   
                     
                   }
                   } 
