@@ -29,8 +29,8 @@ import {
   customelogofourteen,
   customelogofifteen,
 } from "../images";
-import { colorsByLogo } from "../services/api";
-import { getApi } from "../services/functions";
+// import { colorsByLogo } from "../services/api";
+// import { getApi } from "../services/functions";
 
 const animatedComponents = makeAnimated();
 
