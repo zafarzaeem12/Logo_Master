@@ -7,6 +7,7 @@ import makeAnimated from "react-select/animated";
 import { toggleFooter } from "../store/action/webSettingAction";
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { Toasts } from 'bootstrap'
 import Colors from "./Colors";
 import Axios from 'axios';
 import CompanyData from "./CompanyData";
@@ -157,8 +158,12 @@ function Editor() {
         }
       const api = await  fetch(url,methods)
       const response = await api.json();
-      toast.success(response)
-        console.log("response",response)
+  
+      // toast.success(response)
+      <div class="alert alert-primary" role="alert">
+        {response}
+      </div>
+      console.log("resp",response)
      
 
      
@@ -355,10 +360,7 @@ function Editor() {
               DataByCategory={DataByCategory}
               Selected={Selected}
               styles={styles}
-              printchecked={printchecked}
-              Active={Active}
-              
-             
+              printchecked={printchecked}       
             />
           </>
         );
@@ -412,9 +414,11 @@ function Editor() {
               Previous
             </button>
           )}
+
+          
           <button
             class="form-button logo-step-1-btn"
-            onClick={() => handleNext()}
+            onClick={() =>{ !Selected ? CategoriesByLogo() :  handleNext()  }}
             type="submit"
           >
             Next

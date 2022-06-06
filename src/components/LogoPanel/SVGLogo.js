@@ -7,9 +7,9 @@ const SVGLogo = ({data , text}) => {
   const handleImage = (e,dat) => {
       e.preventDefault();
       Setstyles(dat)
-     
-
   }
+
+  console.log("styles",data)
 
   return (
     <>
@@ -27,7 +27,7 @@ const SVGLogo = ({data , text}) => {
                               <p className="textshow">{text[1]}</p>
                             </div>
                                   <img 
-                                    src={dat}
+                                    src={dat?.image}
                                     key={ind}
                                     width={100}
                                     height={100}

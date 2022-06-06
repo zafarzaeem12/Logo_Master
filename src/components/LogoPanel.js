@@ -19,9 +19,9 @@ import SVGLogo from "./LogoPanel/SVGLogo";
 
 function LogoPanel() {
   const { state } = useLocation();
-  const {  Companyname, Slogan , datas , text} = state;
+  const {  Companyname, Slogan , images , text} = state;
   
-  
+  console.log("images%%images",images)
   return (
     <>
       <div className="container-fluid">
@@ -128,7 +128,7 @@ function LogoPanel() {
                   role="tabpanel"
                   aria-labelledby="v-pills-home-tab"
                 >
-                  <SVGLogo data={datas} text={text} />
+                  <SVGLogo data={images} text={text} />
                 </div>
                 <div
                   class="tab-pane fade"

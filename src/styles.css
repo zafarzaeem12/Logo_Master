@@ -2214,11 +2214,13 @@ footer{
 }
 /** STEP BAR CSS END**/
 
-.gen-logo-box-wrap{
+.gen-logo-box-wrap {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 15px;
+  overflow-y: scroll;
+  height: 1500px;
 }
 
 .gen-logo-box-wrap .gen-logo-box.generated-logo-preview {
@@ -2232,7 +2234,7 @@ footer{
 .textshow{
   font-size: larger;
   font-family:'Courier New', Courier, monospace;
-  color: white;
+  color: black
 }
 .textshow-sect {
   position: absolute;

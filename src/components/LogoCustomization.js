@@ -21,7 +21,7 @@ import {
 //   customsixthsvg,
 // ];
 
-function LogoCustomization({ name, slogan }) {
+function LogoCustomization({ name, slogan ,active }) {
   const navigate = useNavigate();
   const [styles, Setstyles] = useState("");
   const [images , Setimages] = useState([]);
@@ -40,10 +40,10 @@ function LogoCustomization({ name, slogan }) {
   const handleselect = (e, data) => {
     e.preventDefault();
     Setstyles(data);
-    if(!SetDatas(data) && !SetText(data) === true){
-        navigate("/logopanel", { state: { datas , text } }) 
+    if(!SetDatas(data) && !SetText(data) === true ){
+        navigate("/logopanel", { state: { images , text } }) 
     }
-    {console.log("images",text)}
+    {console.log("images",images)}
 
   };
   
@@ -73,7 +73,7 @@ function LogoCustomization({ name, slogan }) {
                         <p className="textshow">{data?.company_slogan}</p>
                       </div>
                       <img
-                        src={data}
+                        src={data?.image}
                         key={index}
                         width={40}
                         height={40}
