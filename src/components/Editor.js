@@ -159,10 +159,8 @@ function Editor() {
       const api = await  fetch(url,methods)
       const response = await api.json();
   
-      // toast.success(response)
-      <div class="alert alert-primary" role="alert">
-        {response}
-      </div>
+      toast.success(response)
+      
       console.log("resp",response)
      
 

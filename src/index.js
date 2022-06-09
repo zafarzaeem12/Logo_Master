@@ -9,12 +9,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "aos/dist/aos.css";
 import "./styles.css";
 import "./responsive.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <App />
+        <ToastContainer />
       </PersistGate>
     </Provider>
   // <React.StrictMode>
