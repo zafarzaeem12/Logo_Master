@@ -7,9 +7,6 @@ import makeAnimated from "react-select/animated";
 import { toggleFooter } from "../store/action/webSettingAction";
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import { Toasts } from 'bootstrap'
-import Colors from "./Colors";
-import Axios from 'axios';
 import CompanyData from "./CompanyData";
 import LogoCustomization from "./LogoCustomization";
 import {
