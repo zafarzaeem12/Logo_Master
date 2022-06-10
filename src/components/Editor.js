@@ -66,7 +66,7 @@ function Editor() {
   
   const CategoryApi = async () => {
     const url = await fetch(
-      `http://devv74.myprojectstaging.com/logo-master/public/api/categories`
+      `https://devv74.myprojectstaging.com/logo-master/public/api/categories`
     );
     const data = await url.json();
     const options = data?.categories?.map((dat) => ({
