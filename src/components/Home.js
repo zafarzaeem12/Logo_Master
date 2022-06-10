@@ -40,7 +40,7 @@ function Home() {
               <div className="index-banner-text" data-aos="fade-up" data-aos-duration="1200">
                 <p className="heading title-font">Create Stunning Logos <span>in Seconds</span></p>
                 <p>Design a logo from hundreds of templates</p>
-                <form action="editor.php">
+                <form action="/editor">
                   <input type="text" placeholder="Your company name" />
                   <button type="submit" className="name-submit" id="nextPage" onClick="editorPage();">Try Logo Maker</button>
                 </form>
