@@ -9,6 +9,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Priceing from "./components/Priceing";
 import LogoPanel from "./components/LogoPanel";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route exact path="/login" element={<Login />}></Route>
           <Route exact path="/register" element={<Register />}></Route>
           <Route exact path="/logopanel" element={<LogoPanel />}></Route>
+          
         </Routes>
       </Router>
       <Footer />

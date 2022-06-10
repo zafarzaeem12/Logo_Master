@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+
 import img1 from "../images/editor-group-icon-1.png";
 import img2 from "../images/editor-group-icon-2.png";
 import img3 from "../images/editor-group-icon-3.png";
@@ -18,10 +19,17 @@ import LogoEditing from "./LogoPanel/LogoEditing";
 import SVGLogo from "./LogoPanel/SVGLogo";
 
 function LogoPanel() {
+  const [ Editing,SetEditing ] = useState([])
   const { state } = useLocation();
-  const {  Companyname, Slogan , images , text} = state;
+  const {  Companyname, Slogan , data} = state;
   
-  console.log("images%%images",images)
+
+  const FinalLogoEditing = (data) => {
+    SetEditing(data)
+
+  }
+  console.log("first",Editing)
+  console.log("%%imageimagess",data )
   return (
     <>
       <div className="container-fluid">
@@ -128,7 +136,7 @@ function LogoPanel() {
                   role="tabpanel"
                   aria-labelledby="v-pills-home-tab"
                 >
-                  <SVGLogo data={images} text={text} />
+                  <SVGLogo data={data} FinalLogoEditing={FinalLogoEditing} />
                 </div>
                 <div
                   class="tab-pane fade"
@@ -140,7 +148,7 @@ function LogoPanel() {
                     <CompanyName
                       CompanyName="Company Name"
                       name={Companyname}
-                      text={text}
+                      data={data}
                     />
 
                     <FontSize />
@@ -158,7 +166,7 @@ function LogoPanel() {
                   aria-labelledby="v-pills-messages-tab"
                 >
                   <div class="editor-group-options">
-                    <CompanySlogan name="Company Slogan" slogan={Slogan} text={text} />
+                    <CompanySlogan name="Company Slogan" slogan={Slogan} data={data} />
                     {"  "}
                     <FontSize />
                     {"  "}
@@ -212,7 +220,7 @@ function LogoPanel() {
               <div className="editor-col-3">
                 <div className ="gen-logo-sec">
                   <div className ="generated-logo-preview generated-logo-preview1 generated-logo-preview-big">
-                      <LogoEditing />
+                      <LogoEditing FinalLogoEditing={FinalLogoEditing} Editing={Editing} />
                   </div>
                 </div>
               </div>

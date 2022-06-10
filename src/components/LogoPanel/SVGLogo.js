@@ -1,7 +1,8 @@
-import React,{useState , useRef} from 'react'
+import React,{useState,useRef} from 'react'
 
-const SVGLogo = ({data , text}) => {
+const SVGLogo = ({data,FinalLogoEditing}) => {
 
+console.log("data",data)
   const [styles, Setstyles] = useState("");
 
   const movingText = useRef({
@@ -22,53 +23,74 @@ const SVGLogo = ({data , text}) => {
     transform: 'translate(-25% , -25%)'
   });
 
-  console.log("ggggggggsgg",movingText ,movingText2 )
+  // console.log("ggggggggsgg",movingText ,movingText2 )
 
-  const handleImage = (e,dat) => {
+  const handleImage = (e,data) => {
       e.preventDefault();
-      Setstyles(dat)
+      Setstyles(data)
   }
 
-const FinalLogoEditing = (e) => {
-  console.log("yyyyyyyy",e.target.img)
-}
+
 
   return (
     <>
+
       <div className="editor-logo gen-logo-box-wrap">
-               
+          <div  className="gen-logo-box generated-logo-preview">
+                    <div className="textshow-sect">
+                      <p style={movingText.current}  className="textshow">{data?.company_name}</p>
+                      <p  style={movingText2.current}  className="textshow">{data?.company_slogan}</p>
+                    </div>
+
+                    <img 
+                      src={data?.image}
+                      width={100}
+                      height={100}
+                      onClick ={(e) => { 
+                          handleImage(e , data);
+                          FinalLogoEditing( data);
+                        }}
+                      className={styles === data ? 'svgactive' : 'gen-logo-box'}
+                      
+                    />
+                
+            </div>
+      </div>
+
+
+
+      {/* <div className="editor-logo gen-logo-box-wrap">
                  {
                    data &&
                    data.length > 0 &&
                    data?.flat(3)?.map((dat,ind) => {
+                    console.log("pppppppp",dat)
                      return(
-                       <>
-                        <div className="gen-logo-box generated-logo-preview">
-                            <div className="textshow-sect">
-                              <p style={movingText.current}  className="textshow">{text[0]}</p>
-                              <p  style={movingText2.current}  className="textshow">{text[1]}</p>
-                            </div>
-                                  <img 
-                                    src={dat?.image}
-                                    key={ind}
-                                    width={100}
-                                    height={100}
-                                    onClick={(e) => { 
-                                        handleImage(e , dat) ;
-                                        FinalLogoEditing(e)
-                                     }}
-                                    className={styles === dat ? 'svgactive' : 'gen-logo-box'}
-                                    
-                                  />
-                            
+                          <div  className="gen-logo-box generated-logo-preview">
+                              <div className="textshow-sect">
+                                <p style={movingText.current}  className="textshow">{text[0]}</p>
+                                <p  style={movingText2.current}  className="textshow">{text[1]}</p>
+                              </div>
+                              <img 
+                                src={dat?.image}
+                                key={ind}
+                                width={100}
+                                height={100}
+                                onClick ={(e) => { 
+                                    handleImage(e , dat);
+                                    FinalLogoEditing( dat);
+                                  }}
+                                className={styles === dat ? 'svgactive' : 'gen-logo-box'}
+                                
+                              />
                           </div>
-                       </>
                      )
                    })
                  }
 
          
-			</div>
+			</div> */}
+
     </>
   )
 }

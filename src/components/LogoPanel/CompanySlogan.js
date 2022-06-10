@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CompanySlogan = ({name, slogan, text}) => {
+const CompanySlogan = ({name,data}) => {
   return (
     <>
         <div class="form-group">
@@ -8,7 +8,7 @@ const CompanySlogan = ({name, slogan, text}) => {
             <input 
                 type="text" 
                 placeholder="Slogan" 
-                value={text[1]}
+                value={data?.company_slogan}
                 class="logo-slogan gen-input"
              />
         </div>

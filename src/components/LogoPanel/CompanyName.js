@@ -1,8 +1,8 @@
 import React from 'react'
 
-const CompanyName = ({CompanyName ,name , text}) => {
+const CompanyName = ({CompanyName ,data }) => {
 
-  console.log("slectcomp" ,CompanyName ,name ,text  )
+  console.log("slectcomp" ,CompanyName ,data  )
 
   
 
@@ -13,7 +13,7 @@ const CompanyName = ({CompanyName ,name , text}) => {
             <input 
                 type="text" 
                 placeholder="Logo Name" 
-                value={text[0] || "Company"}
+                value={data?.company_name || "Company"}
                 class="logo-name gen-input"
                 
             />

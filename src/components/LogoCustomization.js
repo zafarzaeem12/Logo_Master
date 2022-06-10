@@ -41,9 +41,9 @@ function LogoCustomization({ name, slogan ,active }) {
     e.preventDefault();
     Setstyles(data);
     if(!SetDatas(data) && !SetText(data) === true ){
-        navigate("/logopanel", { state: { images , text } }) 
+        navigate("/logopanel", { state: { data } }) 
     }
-    {console.log("images",images)}
+    {console.log("images && text",data)}
 
   };
   
