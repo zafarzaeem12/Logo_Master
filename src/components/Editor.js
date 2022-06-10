@@ -410,14 +410,19 @@ function Editor() {
             </button>
           )}
 
+          {
+            currentWidth < 100 && (
+              <button
+                class="form-button logo-step-1-btn"
+                onClick={() =>{ !Selected ? CategoriesByLogo() :  handleNext()  }}
+                type="submit"
+              >
+                Next
+              </button>
+
+            )
+          }
           
-          <button
-            class="form-button logo-step-1-btn"
-            onClick={() =>{ !Selected ? CategoriesByLogo() :  handleNext()  }}
-            type="submit"
-          >
-            Next
-          </button>
         </div>
       </div>
       {/* <!-- STEPS BAR START --> */}
