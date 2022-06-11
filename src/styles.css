@@ -999,6 +999,10 @@ footer{
      height: calc(100vh - 115px);
    }
 
+   .logopanel-img {
+    height: 250px !important;
+    
+}
    .gen-logo-box{
     width: 250px;
     height: 200px;

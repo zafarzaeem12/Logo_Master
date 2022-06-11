@@ -23,17 +23,14 @@ const LogoEditing = ({FinalLogoEditing ,Editing}) => {
 
 
   return (
-    <div className="editor-logo gen-logo-box-wrap">
-    <div  className="gen-logo-box generated-logo-preview">
+      <div  className="gen-logo-box generated-logo-preview logopanel-img">
               <div className="textshow-sect">
-                <p style={movingText.current}  className="textshow">{Editing?.company_name}</p>
+                <p style={movingText.current}  className="textshow">{ Editing?.company_name}</p>
                 <p  style={movingText2.current}  className="textshow">{Editing?.company_slogan}</p>
               </div>
 
               <img 
                 src={Editing?.image}
-                width={800}
-                height={800}
                 // onClick ={(e) => { 
                 //     handleImage(e , data);
                 //     FinalLogoEditing( data);
@@ -43,7 +40,6 @@ const LogoEditing = ({FinalLogoEditing ,Editing}) => {
               />
           
       </div>
-</div>
   )
 }
 
