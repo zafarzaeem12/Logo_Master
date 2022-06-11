@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Typography } from "@mui/material";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
+
 import { toggleFooter } from "../store/action/webSettingAction";
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -26,10 +25,13 @@ import {
   customelogofourteen,
   customelogofifteen,
 } from "../images";
+import CategorySelection from "./CategorySelection";
+import LogoSelection from "./LogoSelection";
+import ColorSelection from "./ColorSelection";
 // import { colorsByLogo } from "../services/api";
 // import { getApi } from "../services/functions";
 
-const animatedComponents = makeAnimated();
+
 
 let images = [
   customelogofirst,
@@ -176,172 +178,46 @@ function Editor() {
       case 0:
         return (
           <>
-            <div className="create-text-1">
-              <p className="heading title-font">
-                Choose Your <span>Business Space</span>
-              </p>
-              <p>This helps us create better designs</p>
-            </div>
-            <form class="logo-maker-form">
-              <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                  <div class="multiSelect-box">
-                    <div class="form-group">
-                      <Select
-                        className="select2-hidden-accessible custom-select"
-                        placeholder="Select Business Category"
-                        components={animatedComponents}
-                        value={Selected}
-                        options={Categories}
-                        onChange={(Selected) => {
-                          handlechange(Selected);
-                          CategoriesByLogo(Selected);
-                          if(Active === 3) {
-                            return DataByCategory(Selected);
-                          }
-                           
-                          
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
+          <CategorySelection 
+            Categories={Categories} 
+            Selected={Selected} 
+            handlechange={handlechange}
+            CategoriesByLogo={CategoriesByLogo}
+            DataByCategory={DataByCategory}
+            Active={Active}
+            />
+           
           </>
         );
       case 1:
         return (
           <>
-            <div className="create-text-1">
-              <p className="heading title-font">Pick some logos</p>
-              <p>We'll use these as inspiration.</p>
-            </div>
-            <form className="logo-maker-form">
-              <div className="catgImgWrap">
-                <div className="catgImg">
-                  {!isLoading ? (
-                    logoimages &&
-                    logoimages?.length > 0 &&
-                    logoimages?.map((data) => {
-                      return (
-                        <>
-                          {data?.logos &&
-                            data?.logos.length > 0 &&
-                            data?.logos.map((dat, ind) => {
-                              return (
-                                <>
-                                  <img
-                                    src={dat?.image}
-                                    key={ind}
-                                    width={200}
-                                    height={200}
-                                    alt={"img.jpg"}
-                                    onClick={(e) => {
-                                      handleimage(e, dat);
-                                      colorIntgration(dat);
-                                      if(Active === 3) {
-                                       return  DataByCategory(Selected, dat); 
-                                      }
-                                    }}
-                                    className={
-                                      styles === dat
-                                        ? "imageactive"
-                                        : "imagenonactive"
-                                    }
-                                  />
-                                </>
-                              );
-                            })}
-                        </>
-                      );
-                    })
-                  ) : (
-                    <div className="spinner-container">
-                      <div className="loading-spinner"></div>
-                    </div>
-                  )}
-
-                  {/* {images &&
-                    images.length > 0 &&
-                    images.map((data, index) => {
-                      return (
-                        <>
-                          <img
-                            key={index}
-                            src={data}
-                            width={200}
-                            height={200}
-                            alt={"img.jpg"}
-                            onClick={(e) => handleimage(e, data)}
-                            className={
-                              styles === data ? "imageactive" : "imagenonactive"
-                            }
-                          />
-                        </>
-                      );
-                    })} */}
-                </div>
-              </div>
-            </form>
+          <LogoSelection 
+            isLoading={isLoading} 
+            logoimages={logoimages} 
+            handleimage={handleimage} 
+            colorIntgration={colorIntgration} 
+            DataByCategory={DataByCategory}
+            Active={Active}
+            Selected={Selected}
+            styles={styles}
+            />
+           
           </>
         );
       case 2:
         return (
           <>
-            {/* <Colors 
-              select={select}
-              SetSelect={SetSelect}
-              checked={checked}
-              Setchecked={Setchecked}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-              
-            /> */}
-
-            <div class="create-text-1">
-              <p class="heading title-font">
-                Pick Some Colors <span>You Like</span>
-              </p>
-              <p>Colors help convey emotion in your logo</p>
-            </div>
-            <form className="logo-maker-form">
-              <div className="color-selection-wrap">
-                {!isLoading ? (
-                  select &&
-                  select.length > 0 &&
-                  select.map((data, index) => {
-                    return (
-                      <div key={index} className="color-item">
-                        <input
-                          type="checkbox"
-                          value={printchecked}
-                          onChange={(e) => {
-                            handleColorChange(e, data);
-                            if(Active === 3) {
-                             return   DataByCategory(Selected, styles, data);
-                            }
-                          }}
-                        />
-                        <span className={data?.name}>
-                          <p>{data?.name}</p>
-                          <p className="color-detail">
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry.
-                          </p>
-                        </span>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <>
-                    <div className="spinner-container">
-                      <div className="loading-spinner"></div>
-                    </div>
-                  </>
-                )}
-              </div>
-            </form>
+            <ColorSelection 
+              isLoading={isLoading} 
+              select={select} 
+              printchecked={printchecked} 
+              handleColorChange={handleColorChange} 
+              DataByCategory={DataByCategory}
+              Selected={Selected}
+              styles={styles}
+              Active={Active}
+              />
           </>
         );
       case 3:
