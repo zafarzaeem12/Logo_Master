@@ -79,7 +79,8 @@ function Editor() {
         Setcategories(options);
     }
     catch(error){
-      console.log(error)
+      toast.error("Categories Not Loading")
+      setIsLoading(true)
     }
   };
 
@@ -89,14 +90,13 @@ function Editor() {
       let url = await fetch(
         `https://devv74.myprojectstaging.com/logo-master/public/api/logos-by-category/${item}`
       );
-      let data = await url.json();
-      Setlogoimages(data?.data);
-      setIsLoading(false);
+      let {data} = await url.json();
+        Setlogoimages(data);
+        setIsLoading(false);
     }
     catch(error){
+      toast.error("Logos not Loading")
       setIsLoading(true)
-      toast.error("Data is not Loading")
-      console.log(error)
     }
   };
   const colorIntgration = async (dat) => {
@@ -105,13 +105,22 @@ function Editor() {
         let url = await fetch(
           `https://devv74.myprojectstaging.com/logo-master/public/api/colors-by-logo/${logocolor}`
         );
-        const { data } = await url.json();
-        SetSelect(data[0]?.colors);
-        setIsLoading(false);
+        const  {data}  = await url.json();
+
+        if(data[0]?.colors?.length > 0) {
+          SetSelect(data[0]?.colors);
+          setIsLoading(false);
+        }else{
+          toast.error("No Colors are found")
+          setIsLoading(true)
+
+        }
+        
+       
     }
     catch(error){
+      toast.error("Colors is not Loading")
       setIsLoading(true)
-      toast.error("Data is not Loading")
     }
   };
 
@@ -271,9 +280,12 @@ function Editor() {
 
 
   useEffect(() => {
+
+     CategoryApi();
+     CategoriesByLogo();
   
-    CategoryApi();
-    CategoriesByLogo();
+
+    
     dispatch(toggleFooter());
     return () => {
       dispatch(toggleFooter());

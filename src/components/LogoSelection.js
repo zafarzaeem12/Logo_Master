@@ -21,8 +21,8 @@ const LogoSelection = ({isLoading,logoimages,handleimage,colorIntgration,DataByC
                       return (
                         <>
                           {data?.logos &&
-                            data?.logos.length > 0 &&
-                            data?.logos.map((dat, ind) => {
+                            data?.logos?.length > 0 &&
+                            data?.logos?.map((dat, ind) => {
                               return (
                                 <>
                                   <img
