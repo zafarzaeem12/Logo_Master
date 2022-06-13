@@ -10,7 +10,11 @@ const LogoSelection = ({isLoading,logoimages,handleimage,colorIntgration,DataByC
             <form className="logo-maker-form">
               <div className="catgImgWrap">
                 <div className="catgImg">
-                  {!isLoading ? (
+                  {isLoading ? (
+                      <div className="spinner-container">
+                        <div className="loading-spinner"></div>
+                    </div>
+                  ) : (
                     logoimages &&
                     logoimages?.length > 0 &&
                     logoimages?.map((data) => {
@@ -46,10 +50,6 @@ const LogoSelection = ({isLoading,logoimages,handleimage,colorIntgration,DataByC
                         </>
                       );
                     })
-                  ) : (
-                    <div className="spinner-container">
-                      <div className="loading-spinner"></div>
-                    </div>
                   )}
                 </div>
               </div>

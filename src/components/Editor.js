@@ -67,34 +67,52 @@ function Editor() {
   const [printchecked, Setprintchecked] = useState([]);
   
   const CategoryApi = async () => {
-    const url = await fetch(
-      `https://devv74.myprojectstaging.com/logo-master/public/api/categories`
-    );
-    const data = await url.json();
-    const options = data?.categories?.map((dat) => ({
-      label: dat?.name,
-      value: dat?.id,
-    }));
-    Setcategories(options);
+    try{
+        const url = await fetch(
+          `https://devv74.myprojectstaging.com/logo-master/public/api/categories`
+        );
+        const data = await url.json();
+        const options = data?.categories?.map((dat) => ({
+          label: dat?.name,
+          value: dat?.id,
+        }));
+        Setcategories(options);
+    }
+    catch(error){
+      console.log(error)
+    }
   };
 
   const CategoriesByLogo = async (Selected) => {
-    let item = Selected?.value;
-    let url = await fetch(
-      `https://devv74.myprojectstaging.com/logo-master/public/api/logos-by-category/${item}`
-    );
-    let data = await url.json();
-    Setlogoimages(data?.data);
-    setIsLoading(false);
+    try{
+      let item = Selected?.value;
+      let url = await fetch(
+        `https://devv74.myprojectstaging.com/logo-master/public/api/logos-by-category/${item}`
+      );
+      let data = await url.json();
+      Setlogoimages(data?.data);
+      setIsLoading(false);
+    }
+    catch(error){
+      setIsLoading(true)
+      toast.error("Data is not Loading")
+      console.log(error)
+    }
   };
   const colorIntgration = async (dat) => {
-    let logocolor = dat?.id;
-    let url = await fetch(
-      `https://devv74.myprojectstaging.com/logo-master/public/api/colors-by-logo/${logocolor}`
-    );
-    const { data } = await url.json();
-    SetSelect(data[0]?.colors);
-    setIsLoading(false);
+    try{
+        let logocolor = dat?.id;
+        let url = await fetch(
+          `https://devv74.myprojectstaging.com/logo-master/public/api/colors-by-logo/${logocolor}`
+        );
+        const { data } = await url.json();
+        SetSelect(data[0]?.colors);
+        setIsLoading(false);
+    }
+    catch(error){
+      setIsLoading(true)
+      toast.error("Data is not Loading")
+    }
   };
 
   const handlechange = (Selected) => {
@@ -159,11 +177,6 @@ function Editor() {
       const response = await api.json();
   
       toast.success(response)
-      
-      console.log("resp",response)
-     
-
-     
     }
     catch(error){
       toast.error("Something is Missing")
@@ -185,6 +198,7 @@ function Editor() {
             CategoriesByLogo={CategoriesByLogo}
             DataByCategory={DataByCategory}
             Active={Active}
+            isLoading={isLoading}
             />
            
           </>
@@ -257,6 +271,7 @@ function Editor() {
 
 
   useEffect(() => {
+  
     CategoryApi();
     CategoriesByLogo();
     dispatch(toggleFooter());

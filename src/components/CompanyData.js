@@ -16,7 +16,6 @@ function CompanyData({name,slogan,setName,setCompanySlogan,DataByCategory,Select
 
   };
   const handlekeydown = (ev) => {
-
     if (ev.keyCode === 65) {
       formRef.current.submit();
     }

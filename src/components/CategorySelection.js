@@ -2,7 +2,7 @@ import React from 'react'
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 const animatedComponents = makeAnimated();
-const CategorySelection = ({Categories,Selected,handlechange,CategoriesByLogo,DataByCategory,Active}) => {
+const CategorySelection = ({Categories,Selected,handlechange,CategoriesByLogo,DataByCategory,Active,isLoading}) => {
   return (
     <>
          <div className="create-text-1">
@@ -16,22 +16,34 @@ const CategorySelection = ({Categories,Selected,handlechange,CategoriesByLogo,Da
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                   <div class="multiSelect-box">
                     <div class="form-group">
-                      <Select
-                        className="select2-hidden-accessible custom-select"
-                        placeholder="Select Business Category"
-                        components={animatedComponents}
-                        value={Selected}
-                        options={Categories}
-                        onChange={(Selected) => {
-                          handlechange(Selected);
-                          CategoriesByLogo(Selected);
-                          if(Active === 3) {
+                      {
+                        isLoading ? (
+                          <div className="spinner-container">
+                            <div className="loading-spinner"></div>
+                          </div>
+                        ) : (
+                          <>
+                            <Select
+                            className="select2-hidden-accessible custom-select"
+                            placeholder="Select Business Category"
+                            components={animatedComponents}
+                            value={Selected}
+                            options={Categories}
+                            onChange={(Selected) => {
+                            handlechange(Selected);
+                            CategoriesByLogo(Selected);
+                            if(Active === 3) {
                             return DataByCategory(Selected);
-                          }
-                           
-                          
-                        }}
-                      />
+                            }
+
+
+                            }}
+                            />
+                        </>
+                        )
+
+                      }
+                    
                     </div>
                   </div>
                 </div>
