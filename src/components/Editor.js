@@ -30,7 +30,7 @@ import LogoSelection from "./LogoSelection";
 import ColorSelection from "./ColorSelection";
 // import { colorsByLogo } from "../services/api";
 // import { getApi } from "../services/functions";
-
+import { getDataApi } from '../ApiMethods/functions';
 
 
 let images = [
@@ -68,11 +68,8 @@ function Editor() {
   
   const CategoryApi = async () => {
     try{
-        const url = await fetch(
-          `https://devv74.myprojectstaging.com/logo-master/public/api/categories`
-        );
-        const data = await url.json();
-        const options = data?.categories?.map((dat) => ({
+      let {categories} = await getDataApi(`categories`)
+        const options = categories?.map((dat) => ({
           label: dat?.name,
           value: dat?.id,
         }));
@@ -87,36 +84,27 @@ function Editor() {
   const CategoriesByLogo = async (Selected) => {
     try{
       let item = Selected?.value;
-      let url = await fetch(
-        `https://devv74.myprojectstaging.com/logo-master/public/api/logos-by-category/${item}`
-      );
-      let {data} = await url.json();
-        Setlogoimages(data);
-        setIsLoading(false);
+      let {data} = await getDataApi(`logos-by-category/${item}`)
+      Setlogoimages(data);
+      setIsLoading(false);
     }
     catch(error){
       toast.error("Logos not Loading")
       setIsLoading(true)
     }
   };
+
   const colorIntgration = async (dat) => {
     try{
         let logocolor = dat?.id;
-        let url = await fetch(
-          `https://devv74.myprojectstaging.com/logo-master/public/api/colors-by-logo/${logocolor}`
-        );
-        const  {data}  = await url.json();
-
+        let {data} = await getDataApi(`colors-by-logo/${logocolor}`);
         if(data[0]?.colors?.length > 0) {
           SetSelect(data[0]?.colors);
           setIsLoading(false);
         }else{
           toast.error("No Colors are found")
           setIsLoading(true)
-
         }
-        
-       
     }
     catch(error){
       toast.error("Colors is not Loading")

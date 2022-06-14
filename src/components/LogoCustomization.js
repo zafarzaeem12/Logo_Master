@@ -1,26 +1,7 @@
 
 import React, { useState, useEffect } from "react";
+import { getDataApi } from '../ApiMethods/functions'
 import { useNavigate } from "react-router-dom";
-import {
-  customfirstsvg,
-  customsecondsvg,
-  customthirdsvg,
-  customfourthsvg,
-  customfifthsvg,
-  customsixthsvg,
-} from "../images/logo-templates";
-
-
-
-// const images = [
-//   customfirstsvg,
-//   customsecondsvg,
-//   customthirdsvg,
-//   customfourthsvg,
-//   customfifthsvg,
-//   customsixthsvg,
-// ];
-
 function LogoCustomization({ name, slogan ,active }) {
   const navigate = useNavigate();
   const [styles, Setstyles] = useState("");
@@ -30,10 +11,8 @@ function LogoCustomization({ name, slogan ,active }) {
 
 
   const GetSelectedLogo =  async () => {
-    let url =  await fetch(`https://devv74.myprojectstaging.com/logo-master/public/api/get-selected-logos`)
-    let data = await url.json()
-    Setimages(data?.data)
-    console.log("sss",data?.data)
+    let {data} = await getDataApi(`get-selected-logos`)
+    Setimages(data)
   }
  
 
@@ -43,8 +22,6 @@ function LogoCustomization({ name, slogan ,active }) {
     if(!SetDatas(data) && !SetText(data) === true ){
         navigate("/logopanel", { state: { data } }) 
     }
-    {console.log("images && text",data)}
-
   };
   
   useEffect(() => {
