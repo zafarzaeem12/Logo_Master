@@ -103,6 +103,9 @@ function Editor() {
           setIsLoading(false);
         }else{
           toast.error("No Colors are found")
+          setTimeout(()=>{
+            navigate('/')
+          },5000)
           setIsLoading(true)
         }
     }
