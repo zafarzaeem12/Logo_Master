@@ -33,7 +33,7 @@ const LogoSelection = ({isLoading,logoimages,handleimage,colorIntgration,DataByC
                                     alt={"img.jpg"}
                                     onClick={(e) => {
                                       handleimage(e, dat);
-                                      colorIntgration(dat);
+                                       colorIntgration(dat);
                                       if(Active === 3) {
                                        return  DataByCategory(Selected, dat); 
                                       }

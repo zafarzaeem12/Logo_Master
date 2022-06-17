@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Typography } from "@mui/material";
 
@@ -30,7 +30,7 @@ import LogoSelection from "./LogoSelection";
 import ColorSelection from "./ColorSelection";
 // import { colorsByLogo } from "../services/api";
 // import { getApi } from "../services/functions";
-import { getDataApi } from '../ApiMethods/functions';
+import { getDataApi , postDataApi } from '../ApiMethods/functions';
 
 
 let images = [
@@ -109,6 +109,8 @@ function Editor() {
     catch(error){
       toast.error("Colors is not Loading")
       setIsLoading(true)
+      // navigate('../success',{ <Link to="/" /> })
+      
     }
   };
 
@@ -146,7 +148,7 @@ function Editor() {
   };
 
 
-  const DataByCategory = async (Selected,styles,printchecked,Companyname ,Slogan,) => {
+  const DataByCategory = async (Selected,styles,printchecked,Companyname,Slogan,) => {
     try{
         var category_id = Selected?.value;
         var logo_id = styles?.id;
@@ -162,9 +164,7 @@ function Editor() {
         company_slogan
       }
         console.log("payload",payload)
-
         let url = `https://devv74.myprojectstaging.com/logo-master/public/api/selected-logos`;
-        
         let methods  = {
           method: "POST",
           headers: { "Content-type": "application/json; charset=UTF-8" },
@@ -172,12 +172,10 @@ function Editor() {
         }
       const api = await  fetch(url,methods)
       const response = await api.json();
-  
       toast.success(response)
     }
     catch(error){
       toast.error("Something is Missing")
-      
     }
   };
 

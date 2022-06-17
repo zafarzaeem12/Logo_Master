@@ -2284,6 +2284,16 @@ footer{
   animation: spinner 1.5s linear infinite;
 }
 
+.loading-spinner-danger {
+  width: 200px;
+  height: 200px;
+  border: 10px solid #0000cb; /* Light grey */
+  border-top: 10px solid #EE0909; /* Black */
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+}
+
+
 .spinner-container {
   display: flex;
   justify-content: center;

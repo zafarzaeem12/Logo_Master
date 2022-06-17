@@ -22,7 +22,12 @@ const ColorSelection = ({
         <div className="color-selection-wrap">
           {isLoading ? (
             <div className="spinner-container">
-              <div className="loading-spinner"></div>
+              {
+                isLoading === false ? 
+                ( <div className="loading-spinner"></div> ) :
+                 ( <div className="loading-spinner-danger"></div> )
+              }
+              
             </div>
           ) : (
             select &&
