@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate , Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Typography } from "@mui/material";
 
 import { toggleFooter } from "../store/action/webSettingAction";
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import CompanyData from "./CompanyData";
 import LogoCustomization from "./LogoCustomization";
 import {
@@ -28,10 +28,7 @@ import {
 import CategorySelection from "./CategorySelection";
 import LogoSelection from "./LogoSelection";
 import ColorSelection from "./ColorSelection";
-// import { colorsByLogo } from "../services/api";
-// import { getApi } from "../services/functions";
-import { getDataApi , postDataApi } from '../ApiMethods/functions';
-
+import { getDataApi, postDataApi } from "../ApiMethods/functions";
 
 let images = [
   customelogofirst,
@@ -65,55 +62,51 @@ function Editor() {
   const [isLoading, setIsLoading] = useState(true);
   const [select, SetSelect] = useState([]);
   const [printchecked, Setprintchecked] = useState([]);
-  
+
   const CategoryApi = async () => {
-    try{
-      let {categories} = await getDataApi(`categories`)
-        const options = categories?.map((dat) => ({
-          label: dat?.name,
-          value: dat?.id,
-        }));
-        Setcategories(options);
-    }
-    catch(error){
-      toast.error("Categories Not Loading")
-      setIsLoading(true)
+    try {
+      let { categories } = await getDataApi(`categories`);
+      const options = categories?.map((dat) => ({
+        label: dat?.name,
+        value: dat?.id,
+      }));
+      Setcategories(options);
+    } catch (error) {
+      toast.error("Categories Not Loading");
+      setIsLoading(true);
     }
   };
 
   const CategoriesByLogo = async (Selected) => {
-    try{
+    try {
       let item = Selected?.value;
-      let {data} = await getDataApi(`logos-by-category/${item}`)
+      let { data } = await getDataApi(`logos-by-category/${item}`);
       Setlogoimages(data);
       setIsLoading(false);
-    }
-    catch(error){
-      toast.error("Logos not Loading")
-      setIsLoading(true)
+    } catch (error) {
+      toast.error("Logos not Loading");
+      setIsLoading(true);
     }
   };
 
   const colorIntgration = async (dat) => {
-    try{
-        let logocolor = dat?.id;
-        let {data} = await getDataApi(`colors-by-logo/${logocolor}`);
-        if(data[0]?.colors?.length > 0) {
-          SetSelect(data[0]?.colors);
-          setIsLoading(false);
-        }else{
-          toast.error("No Colors are found")
-          setTimeout(()=>{
-            navigate('/')
-          },2500)
-          setIsLoading(true)
-        }
-    }
-    catch(error){
-      toast.error("Colors is not Loading")
-      setIsLoading(true)
+    try {
+      let logocolor = dat?.id;
+      let { data } = await getDataApi(`colors-by-logo/${logocolor}`);
+      if (data[0]?.colors?.length > 0) {
+        SetSelect(data[0]?.colors);
+        setIsLoading(false);
+      } else {
+        toast.error("No Colors are found");
+        setTimeout(() => {
+          navigate("/");
+        }, 2500);
+        setIsLoading(true);
+      }
+    } catch (error) {
+      toast.error("Colors is not Loading");
+      setIsLoading(true);
       // navigate('../success',{ <Link to="/" /> })
-      
     }
   };
 
@@ -122,13 +115,33 @@ function Editor() {
     return setSelected(Selected);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     let getCurrentWidth = currentWidth;
     if (getCurrentWidth <= 100) {
-      setCurrentWidth(getCurrentWidth + 20);
       if (Active === 4) {
         navigate("/logopanel", { state: { Companyname, Slogan } });
+      } else if (Active === 3) {
+        if (Companyname === "") {
+          toast.error("Please Enter Company Name");
+          return;
+        }
+        if (Slogan === "") {
+          toast.error("Please Enter Slogan");
+          return;
+        }
+        if (Companyname !== "" && Slogan !== "") {
+          setCurrentWidth(getCurrentWidth + 20);
+          await DataByCategory(
+            Selected,
+            styles,
+            printchecked,
+            Companyname,
+            Slogan
+          );
+          Setactive(Active + 1);
+        }
       } else {
+        setCurrentWidth(getCurrentWidth + 20);
         Setactive(Active + 1);
       }
     }
@@ -150,86 +163,86 @@ function Editor() {
     return Setprintchecked(data);
   };
 
+  const DataByCategory = async (
+    Selected,
+    styles,
+    printchecked,
+    Companyname,
+    Slogan
+  ) => {
+    try {
+      var category_id = Selected?.value;
+      var logo_id = styles?.id;
+      var color_id = printchecked?.id;
+      var company_name = Companyname;
+      var company_slogan = Slogan;
 
-  const DataByCategory = async (Selected,styles,printchecked,Companyname,Slogan) => {
-    try{
-        var category_id = Selected?.value;
-        var logo_id = styles?.id;
-        var color_id = printchecked?.id;
-        var company_name = Companyname ;
-        var company_slogan = Slogan;
-        
       const payload = {
         category_id,
         logo_id,
         color_id,
         company_name,
-        company_slogan
-      }
-        console.log("payload",payload)
-        let url = `https://devv74.myprojectstaging.com/logo-master/public/api/selected-logos`;
-        let methods  = {
-          method: "POST",
-          headers: { "Content-type": "application/json; charset=UTF-8" },
-          body:JSON.stringify(payload)
-        }
-      const api = await  fetch(url,methods)
+        company_slogan,
+      };
+      console.log("payload", payload);
+      let url = `https://devv74.myprojectstaging.com/logo-master/public/api/selected-logos`;
+      let methods = {
+        method: "POST",
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+        body: JSON.stringify(payload),
+      };
+      const api = await fetch(url, methods);
       const response = await api.json();
-      toast.success(response)
-    }
-    catch(error){
-      toast.error("Something is Missing")
+      toast.success(response);
+    } catch (error) {
+      toast.error("Something is Missing");
     }
   };
 
-  
-  
   const StepsContent = (step) => {
     switch (step) {
       case 0:
         return (
           <>
-          <CategorySelection 
-            Categories={Categories} 
-            Selected={Selected} 
-            handlechange={handlechange}
-            CategoriesByLogo={CategoriesByLogo}
-            DataByCategory={DataByCategory}
-            Active={Active}
-            isLoading={isLoading}
+            <CategorySelection
+              Categories={Categories}
+              Selected={Selected}
+              handlechange={handlechange}
+              CategoriesByLogo={CategoriesByLogo}
+              DataByCategory={DataByCategory}
+              Active={Active}
+              isLoading={isLoading}
             />
-           
           </>
         );
       case 1:
         return (
           <>
-          <LogoSelection 
-            isLoading={isLoading} 
-            logoimages={logoimages} 
-            handleimage={handleimage} 
-            colorIntgration={colorIntgration} 
-            DataByCategory={DataByCategory}
-            Active={Active}
-            Selected={Selected}
-            styles={styles}
+            <LogoSelection
+              isLoading={isLoading}
+              logoimages={logoimages}
+              handleimage={handleimage}
+              colorIntgration={colorIntgration}
+              DataByCategory={DataByCategory}
+              Active={Active}
+              Selected={Selected}
+              styles={styles}
             />
-           
           </>
         );
       case 2:
         return (
           <>
-            <ColorSelection 
-              isLoading={isLoading} 
-              select={select} 
-              printchecked={printchecked} 
-              handleColorChange={handleColorChange} 
+            <ColorSelection
+              isLoading={isLoading}
+              select={select}
+              printchecked={printchecked}
+              handleColorChange={handleColorChange}
               DataByCategory={DataByCategory}
               Selected={Selected}
               styles={styles}
               Active={Active}
-              />
+            />
           </>
         );
       case 3:
@@ -240,10 +253,6 @@ function Editor() {
               slogan={Slogan}
               setName={Setcompanyname}
               setCompanySlogan={Setslogan}
-              DataByCategory={DataByCategory}
-              Selected={Selected}
-              styles={styles}
-              printchecked={printchecked}       
             />
           </>
         );
@@ -267,14 +276,10 @@ function Editor() {
     }
   };
 
-
   useEffect(() => {
+    CategoryApi();
+    CategoriesByLogo();
 
-     CategoryApi();
-     CategoriesByLogo();
-
-
-    
     dispatch(toggleFooter());
     return () => {
       dispatch(toggleFooter());
@@ -302,19 +307,17 @@ function Editor() {
             </button>
           )}
 
-          {
-            currentWidth < 100 && (
-              <button
-                class="form-button logo-step-1-btn"
-                onClick={() =>{ !Selected ? CategoriesByLogo() :  handleNext()  }}
-                type="submit"
-              >
-                Next
-              </button>
-
-            )
-          }
-          
+          {currentWidth < 100 && (
+            <button
+              class="form-button logo-step-1-btn"
+              onClick={() => {
+                !Selected ? CategoriesByLogo() : handleNext();
+              }}
+              type="submit"
+            >
+              Next
+            </button>
+          )}
         </div>
       </div>
       {/* <!-- STEPS BAR START --> */}
