@@ -1,8 +1,7 @@
 import React , {useRef} from 'react'
 
 const LogoEditing = ({FinalLogoEditing ,Editing}) => {
-  console.log("FinalLogoEditingzzzzzzzz",Editing)
-
+  
   const movingText = useRef({
     position : 'relative',
     top : Math.ceil(Math.random()*100),

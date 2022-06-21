@@ -151,7 +151,7 @@ function Editor() {
   };
 
 
-  const DataByCategory = async (Selected,styles,printchecked,Companyname,Slogan,) => {
+  const DataByCategory = async (Selected,styles,printchecked,Companyname,Slogan) => {
     try{
         var category_id = Selected?.value;
         var logo_id = styles?.id;
@@ -272,7 +272,7 @@ function Editor() {
 
      CategoryApi();
      CategoriesByLogo();
-  
+
 
     
     dispatch(toggleFooter());
