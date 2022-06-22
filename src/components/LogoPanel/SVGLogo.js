@@ -1,8 +1,8 @@
 import React,{useState,useRef} from 'react'
 
-const SVGLogo = ({data,FinalLogoEditing}) => {
+const SVGLogo = ({data,FinalLogoEditing,Names}) => {
 
-console.log("data",data)
+// console.log("data",data , "Names",Names)
   const [styles, Setstyles] = useState("");
 
   const movingText = useRef({
@@ -38,7 +38,10 @@ console.log("data",data)
       <div className="editor-logo gen-logo-box-wrap">
           <div  className="gen-logo-box generated-logo-preview">
                     <div className="textshow-sect">
+                      {/* <p style={movingText.current}  className="textshow">{data?.company_name}</p> */}
+
                       <p style={movingText.current}  className="textshow">{data?.company_name}</p>
+
                       <p  style={movingText2.current}  className="textshow">{data?.company_slogan}</p>
                     </div>
 

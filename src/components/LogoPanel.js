@@ -20,6 +20,9 @@ import SVGLogo from "./LogoPanel/SVGLogo";
 
 function LogoPanel() {
   const [ Editing,SetEditing ] = useState([])
+  const [ Names , Setnames] = useState(" ");
+  const [ Slogans , Setslogan] = useState(" ");
+  const [Size , setSize] = useState(22);
   const { state } = useLocation();
   const {  Companyname, Slogan , data} = state;
   
@@ -28,6 +31,23 @@ function LogoPanel() {
     SetEditing(data)
 
   }
+
+
+  const onhandlesubmit = (name) => {
+    console.log("******",name)
+    Setnames(name)
+  }
+
+  const onhandlessubmit = (slogan) => {
+    console.log("!!!!!",slogan)
+    Setslogan(slogan)
+  }
+
+  const onsizehandle = (Size) => {
+    console.log("ppp",Size)
+    setSize(Size)
+  }
+  
   console.log("first",Editing)
   console.log("%%imageimagess",data )
   return (
@@ -136,7 +156,7 @@ function LogoPanel() {
                   role="tabpanel"
                   aria-labelledby="v-pills-home-tab"
                 >
-                  <SVGLogo data={data} FinalLogoEditing={FinalLogoEditing} />
+                  <SVGLogo data={data} FinalLogoEditing={FinalLogoEditing}   />
                 </div>
                 <div
                   class="tab-pane fade"
@@ -149,9 +169,10 @@ function LogoPanel() {
                       CompanyName="Company Name"
                       name={Companyname}
                       data={data}
+                      onSubmitName={(e) =>  onhandlesubmit(e)}
                     />
 
-                    <FontSize />
+                    <FontSize onSubmitSize = { (e) => onsizehandle(e) } />
                     <FontFamily />
                     <FontWeight />
                     <Fontstyle />
@@ -166,9 +187,13 @@ function LogoPanel() {
                   aria-labelledby="v-pills-messages-tab"
                 >
                   <div class="editor-group-options">
-                    <CompanySlogan name="Company Slogan" slogan={Slogan} data={data} />
+                    <CompanySlogan 
+                      name="Company Slogan" 
+                      slogan={Slogan} 
+                      data={data}   
+                      onSubmitSlogan={(e) => onhandlessubmit(e) } />
                     {"  "}
-                    <FontSize />
+                    <FontSize onSubmitSize = { (e) => onsizehandle(e) } />
                     {"  "}
                     <FontFamily />
                     {"  "}
@@ -220,7 +245,15 @@ function LogoPanel() {
               <div className="editor-col-3">
                 <div className ="gen-logo-sec">
                   <div className ="generated-logo-preview generated-logo-preview1 generated-logo-preview-big">
-                      <LogoEditing FinalLogoEditing={FinalLogoEditing} Editing={Editing} />
+                      <LogoEditing 
+                        FinalLogoEditing={FinalLogoEditing} 
+                        Editing={Editing} 
+                        Names={Names} 
+                        Slogans={Slogans}
+                        Size={Size}
+                        
+                        />
+                        
                   </div>
                 </div>
               </div>

@@ -2236,7 +2236,7 @@ footer{
 }
 
 .textshow{
-  font-size: larger;
+  /* font-size: larger; */
   font-family:'Courier New', Courier, monospace;
   color: black;
   font-weight: bold;

@@ -1,7 +1,7 @@
-import React , {useRef} from 'react'
+import React , {useRef , useState} from 'react'
 
-const LogoEditing = ({FinalLogoEditing ,Editing}) => {
-  
+const LogoEditing = ({Editing ,Names ,Slogans ,Size , Sizes}) => {
+  console.log("hhhheee",Size )
   const movingText = useRef({
     position : 'relative',
     top : Math.ceil(Math.random()*100),
@@ -21,11 +21,40 @@ const LogoEditing = ({FinalLogoEditing ,Editing}) => {
   });
 
 
+
   return (
       <div  className="gen-logo-box generated-logo-preview logopanel-img">
               <div className="textshow-sect">
-                <p style={movingText.current}  className="textshow">{ Editing?.company_name}</p>
-                <p  style={movingText2.current}  className="textshow">{Editing?.company_slogan}</p>
+              <div>
+                    {
+                      Names === " " ? (
+                            <p ref={movingText.current} style={{fontSize: Number(Size)}}  className="textshow">
+                              { Editing?.company_name}
+                            </p>
+                      ) : (
+                        <p ref={movingText.current} style={{fontSize: Number(Size)}} className="textshow">
+                          { Names}
+                        </p>
+                      )
+                  }
+              </div>
+              <div>
+              {
+                        Slogans === " " ? (
+                          <p  ref={movingText2.current}  className="textshow">{Editing?.company_slogan}</p>
+                        ) : (
+                          <p  ref={movingText2.current}   className="textshow">{Slogans}</p>
+                        )
+                    }
+              </div>
+             
+                  
+                   
+
+                   
+                
+              
+                
               </div>
 
               <img 
