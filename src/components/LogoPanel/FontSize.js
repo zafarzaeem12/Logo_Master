@@ -17,7 +17,7 @@ const FontSize = (props) => {
   return (
     <>
         <div class="form-group">
-            <label>Font Size</label>
+            <label class="gen-label">Font Size</label>
             <form onSubmit={(e) => handleSubmit(e)}>
               <input  
                 type="number" 
