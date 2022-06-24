@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import img1 from "../images/editor-group-icon-1.png";
@@ -33,13 +33,18 @@ function LogoPanel() {
   const [ sloganSize, Setslogansize] = useState(22);
   const { state } = useLocation();
   const {  Companyname, Slogan , data} = state;
-  
+  const [ FontFamilys , SetFontFamilys ] = useState([]);
+  const [ Selected, setSelected] = useState("");
+
 
   const FinalLogoEditing = (data) => {
     SetEditing(data)
 
   }
 
+  const handlechange = (Selected) => {
+    setSelected(Selected)
+  }
 
   const onhandlesubmit = (name) => {
     console.log("******",name)
@@ -60,6 +65,28 @@ function LogoPanel() {
     console.log("we88888",sloganSize)
     Setslogansize(sloganSize)
   }
+
+
+  const FontFamilyApiData = async () => {
+    let apikey = 'AIzaSyCSmTJkLEMFZMvF47raVkmL_YhKpgrTCrA'
+    const url = await fetch(`https://www.googleapis.com/webfonts/v1/webfonts?key=${apikey}`)
+    console.log("ppp",url)
+    const {items} = await url.json();
+    console.log("*****",items)
+    let options =  items.map((data,ind) => ({
+        label: data?.family,
+        id: data?.version
+    }))
+    SetFontFamilys(options)
+  }
+
+  useEffect(()=>{
+    FontFamilyApiData()
+  },[])
+
+
+
+
   console.log("first",Editing)
   console.log("%%imageimagess",data )
   return (
@@ -185,7 +212,11 @@ function LogoPanel() {
                     />
 
                     <FontSize onSubmitSize = { (e) => onsizehandle(e) } />
-                    <FontFamily />
+                    <FontFamily  
+                      FontFamilys={FontFamilys} 
+                      Selected={Selected}
+                      handlechange={handlechange}
+                      />
                     <FontWeight />
                     <Fontstyle />
                     <Backgroundcolor />
