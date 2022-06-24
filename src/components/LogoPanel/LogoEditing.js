@@ -1,7 +1,7 @@
 import React , {useRef , useState} from 'react'
 
-const LogoEditing = ({Editing ,Names ,Slogans ,Size , Sizes}) => {
-  console.log("hhhheee",Size )
+const LogoEditing = ({Editing ,Names ,Slogans ,Size , sloganSize}) => {
+  console.log("hhhheee",Size ,sloganSize )
   const movingText = useRef({
     position : 'relative',
     top : Math.ceil(Math.random()*100),
@@ -41,9 +41,9 @@ const LogoEditing = ({Editing ,Names ,Slogans ,Size , Sizes}) => {
               <div>
               {
                         Slogans === " " ? (
-                          <p  ref={movingText2.current}  className="textshow">{Editing?.company_slogan}</p>
+                          <p  ref={movingText2.current} style={{fontSize: Number(sloganSize)}}  className="textshow">{Editing?.company_slogan}</p>
                         ) : (
-                          <p  ref={movingText2.current}   className="textshow">{Slogans}</p>
+                          <p  ref={movingText2.current} style={{fontSize: Number(sloganSize)}}  className="textshow">{Slogans}</p>
                         )
                     }
               </div>

@@ -6,14 +6,21 @@ import img2 from "../images/editor-group-icon-2.png";
 import img3 from "../images/editor-group-icon-3.png";
 import img4 from "../images/editor-group-icon-4.png";
 import img5 from "../images/editor-group-icon-5.png";
-import Backgroundcolor from "./LogoPanel/Backgroundcolor";
-import CompanyName from "./LogoPanel/CompanyName";
-import CompanySlogan from "./LogoPanel/CompanySlogan";
-import FontFamily from "./LogoPanel/FontFamily";
-import FontSize from "./LogoPanel/FontSize";
-import Fontstyle from "./LogoPanel/Fontstyle";
-import FontWeight from "./LogoPanel/FontWeight";
-import GradientPalette from "./LogoPanel/GradientPalette";
+import CompanyName from "./LogoPanel/Name/CompanyName";
+import FontFamily from "./LogoPanel/Name/FontFamily";
+import FontSize from "./LogoPanel/Name/FontSize";
+import Fontstyle from "./LogoPanel/Name/Fontstyle";
+import FontWeight from "./LogoPanel/Name/FontWeight";
+import GradientPalette from "./LogoPanel/Name/GradientPalette";
+import Backgroundcolor from "./LogoPanel/Name/Backgroundcolor";
+
+import CompanySlogan from "./LogoPanel/Slogan/CompanySlogan";
+import FontSize2 from "./LogoPanel/Slogan/FontSize2";
+import FontFamily2 from "./LogoPanel/Slogan/FontFamily2";
+import Fontstyle2 from "./LogoPanel/Slogan/Fontstyle2";
+import FontWeight2 from "./LogoPanel/Slogan/FontWeight2";
+import GradientPalette2 from "./LogoPanel/Slogan/GradientPalette2";
+import Backgroundcolor2 from "./LogoPanel/Slogan/Backgroundcolor2";
 import IconSize from "./LogoPanel/IconSize";
 import LogoEditing from "./LogoPanel/LogoEditing";
 import SVGLogo from "./LogoPanel/SVGLogo";
@@ -23,6 +30,7 @@ function LogoPanel() {
   const [ Names , Setnames] = useState(" ");
   const [ Slogans , Setslogan] = useState(" ");
   const [Size , setSize] = useState(22);
+  const [ sloganSize, Setslogansize] = useState(22);
   const { state } = useLocation();
   const {  Companyname, Slogan , data} = state;
   
@@ -48,6 +56,10 @@ function LogoPanel() {
     setSize(Size)
   }
   
+  const handleslogan = (sloganSize) => {
+    console.log("we88888",sloganSize)
+    Setslogansize(sloganSize)
+  }
   console.log("first",Editing)
   console.log("%%imageimagess",data )
   return (
@@ -193,17 +205,17 @@ function LogoPanel() {
                       data={data}   
                       onSubmitSlogan={(e) => onhandlessubmit(e) } />
                     {"  "}
-                    <FontSize onSubmitSize = { (e) => onsizehandle(e) } />
+                    <FontSize2  onSubmitslogan = { (e) => handleslogan(e) } />
                     {"  "}
-                    <FontFamily />
+                    <FontFamily2 />
                     {"  "}
-                    <FontWeight />
+                    <FontWeight2 />
                     {"  "}
-                    <Fontstyle />
+                    <Fontstyle2 />
                     {"  "}
-                    <Backgroundcolor name="Slogan Color" />
+                    <Backgroundcolor2 name="Slogan Color" />
                     {"  "}
-                    <GradientPalette />
+                    <GradientPalette2 />
                   </div>
                 </div>
                 <div
@@ -251,6 +263,7 @@ function LogoPanel() {
                         Names={Names} 
                         Slogans={Slogans}
                         Size={Size}
+                        sloganSize={sloganSize}
                         
                         />
                         
