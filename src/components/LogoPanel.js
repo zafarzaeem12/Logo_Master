@@ -70,14 +70,23 @@ function LogoPanel() {
   const FontFamilyApiData = async () => {
     let apikey = 'AIzaSyCSmTJkLEMFZMvF47raVkmL_YhKpgrTCrA'
     const url = await fetch(`https://www.googleapis.com/webfonts/v1/webfonts?key=${apikey}`)
-    console.log("ppp",url)
     const {items} = await url.json();
-    console.log("*****",items)
-    let options =  items.map((data,ind) => ({
-        label: data?.family,
-        id: data?.version
-    }))
-    SetFontFamilys(options)
+    let pitems = items.map(async (data) => {
+     let family = data?.family;
+     let subset = data?.subsets[0];
+     let variants = data?.variants[0];
+
+     let url2 = await fetch(`https://fonts.googleapis.com/css?family=${family}:${variants}&subset=${subset}`)
+     return url2
+    });
+
+    console.log("#####",pitems)
+    
+    // let options =  items.map((data,ind) => ({
+    //     label: data?.family,
+    //     id: data?.version
+    // }))
+    // SetFontFamilys(options)
   }
 
   useEffect(()=>{

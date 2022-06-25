@@ -10,7 +10,7 @@ const FontFamily = ({FontFamilys , Selected , handlechange}) => {
                 <label class="gen-label">Font Family</label>
                   <Select
                   className="select2-hidden-accessible custom-select gen-input"
-                  placeholder="Select FontFamily Category"
+                  placeholder="Select Font Family"
                   components={animatedComponents}
                   value={Selected}
                   options={FontFamilys}
