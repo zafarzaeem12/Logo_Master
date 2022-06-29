@@ -37,6 +37,8 @@ function LogoPanel() {
   const [ Selected, setSelected] = useState("");
 
 
+  console.log("FontFamilys",FontFamilys)
+
   const FinalLogoEditing = (data) => {
     SetEditing(data)
 
@@ -66,37 +68,49 @@ function LogoPanel() {
     Setslogansize(sloganSize)
   }
 
-
   const FontFamilyApiData = async () => {
     let apikey = 'AIzaSyCSmTJkLEMFZMvF47raVkmL_YhKpgrTCrA'
     const url = await fetch(`https://www.googleapis.com/webfonts/v1/webfonts?key=${apikey}`)
     const {items} = await url.json();
-    let pitems = items.map(async (data) => {
-     let family = data?.family;
-     let subset = data?.subsets[0];
-     let variants = data?.variants[0];
-
-     let url2 = await fetch(`https://fonts.googleapis.com/css?family=${family}:${variants}&subset=${subset}`)
-     return url2
-    });
-
-    console.log("#####",pitems)
-    
-    // let options =  items.map((data,ind) => ({
-    //     label: data?.family,
-    //     id: data?.version
-    // }))
-    // SetFontFamilys(options)
+   return items
   }
 
+  const FontFamilyies = async (items) => {
+    let FaFamily = await FontFamilyApiData(items)
+     let datas1 = FaFamily?.filter((data) => {
+      if(
+         data?.family &&
+         data?.variants.length > 0 &&
+          data?.variants.length < 2 &&
+           data?.subsets.length > 0 &&
+            data?.subsets.length < 2  )  {  
+        return  fetch(`https://fonts.googleapis.com/css?family=${data?.family}:${data?.variants}&subset=${data?.subsets}`)
+           .then((res) =>  res.json() )
+           .then((dataa) =>  dataa)
+           
+      } 
+    })
+    // let final = await Promise.all(datas1)
+    let options = datas1?.map((data) => ({
+      label: data?.family,
+      id: data?.version
+    }));
+    
+    SetFontFamilys(options);
+   
+
+  }
+
+ 
+
   useEffect(()=>{
-    FontFamilyApiData()
-  },[])
+    FontFamilyies()
+  },[FontFamilys])
 
 
 
 
-  console.log("first",Editing)
+  console.log("first",Editing , FontFamilys)
   console.log("%%imageimagess",data )
   return (
     <>
@@ -247,7 +261,7 @@ function LogoPanel() {
                     {"  "}
                     <FontSize2  onSubmitslogan = { (e) => handleslogan(e) } />
                     {"  "}
-                    <FontFamily2 />
+                    <FontFamily2 FontFamilys={FontFamilys} />
                     {"  "}
                     <FontWeight2 />
                     {"  "}
