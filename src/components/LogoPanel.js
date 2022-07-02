@@ -1,4 +1,4 @@
-import React, { useState ,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import img1 from "../images/editor-group-icon-1.png";
@@ -26,92 +26,88 @@ import LogoEditing from "./LogoPanel/LogoEditing";
 import SVGLogo from "./LogoPanel/SVGLogo";
 
 function LogoPanel() {
-  const [ Editing,SetEditing ] = useState([])
-  const [ Names , Setnames] = useState(" ");
-  const [ Slogans , Setslogan] = useState(" ");
-  const [Size , setSize] = useState(22);
-  const [ sloganSize, Setslogansize] = useState(22);
+  const [Editing, SetEditing] = useState([]);
+  const [Names, Setnames] = useState(" ");
+  const [Slogans, Setslogan] = useState(" ");
+  const [Size, setSize] = useState(22);
+  const [sloganSize, Setslogansize] = useState(22);
   const { state } = useLocation();
-  const {  Companyname, Slogan , data} = state;
-  const [ FontFamilys , SetFontFamilys ] = useState([]);
-  const [ Selected, setSelected] = useState("");
+  const { Companyname, Slogan, data } = state;
+  const [FontFamilys, SetFontFamilys] = useState([]);
+  const [Selected, setSelected] = useState("");
 
-
-  console.log("FontFamilys",FontFamilys)
+  console.log("FontFamilys", FontFamilys);
 
   const FinalLogoEditing = (data) => {
-    SetEditing(data)
-
-  }
+    SetEditing(data);
+  };
 
   const handlechange = (Selected) => {
-    setSelected(Selected)
-  }
+    setSelected(Selected);
+  };
 
   const onhandlesubmit = (name) => {
-    console.log("******",name)
-    Setnames(name)
-  }
+    console.log("******", name);
+    Setnames(name);
+  };
 
   const onhandlessubmit = (slogan) => {
-    console.log("!!!!!",slogan)
-    Setslogan(slogan)
-  }
+    console.log("!!!!!", slogan);
+    Setslogan(slogan);
+  };
 
   const onsizehandle = (Size) => {
-    console.log("ppp",Size)
-    setSize(Size)
-  }
-  
+    console.log("ppp", Size);
+    setSize(Size);
+  };
+
   const handleslogan = (sloganSize) => {
-    console.log("we88888",sloganSize)
-    Setslogansize(sloganSize)
-  }
+    console.log("we88888", sloganSize);
+    Setslogansize(sloganSize);
+  };
 
   const FontFamilyApiData = async () => {
-    let apikey = 'AIzaSyCSmTJkLEMFZMvF47raVkmL_YhKpgrTCrA'
-    const url = await fetch(`https://www.googleapis.com/webfonts/v1/webfonts?key=${apikey}`)
-    const {items} = await url.json();
-   return items
-  }
+    let apikey = "AIzaSyCSmTJkLEMFZMvF47raVkmL_YhKpgrTCrA";
+    const url = await fetch(
+      `https://www.googleapis.com/webfonts/v1/webfonts?key=${apikey}`
+    );
+    const { items } = await url.json();
+    return items;
+  };
 
   const FontFamilyies = async (items) => {
-    let FaFamily = await FontFamilyApiData(items)
-     let datas1 = FaFamily?.filter((data) => {
-      if(
-         data?.family &&
-         data?.variants.length > 0 &&
-          data?.variants.length < 2 &&
-           data?.subsets.length > 0 &&
-            data?.subsets.length < 2  )  {  
-        return  fetch(`https://fonts.googleapis.com/css?family=${data?.family}:${data?.variants}&subset=${data?.subsets}`)
-           .then((res) =>  res.json() )
-           .then((dataa) =>  dataa)
-           
-      } 
-    })
+    let FaFamily = await FontFamilyApiData(items);
+    let datas1 = FaFamily?.filter((data) => {
+      if (
+        data?.family &&
+        data?.variants?.length > 0 &&
+        data?.variants?.length < 2 &&
+        data?.subsets?.length > 0 &&
+        data?.subsets?.length < 2
+      ) {
+        return fetch(
+          `https://fonts.googleapis.com/css?family=${data?.family}:${data?.variants}&subset=${data?.subsets}`
+        )
+          .then((res) => res?.json())
+          .then((dataa) => dataa);
+      }
+    });
     // let final = await Promise.all(datas1)
+
     let options = datas1?.map((data) => ({
       label: data?.family,
-      id: data?.version
+      id: data?.version,
     }));
-    
+
     SetFontFamilys(options);
-   
+  };
 
-  }
+  useEffect(() => {
+    FontFamilyies();
+  }, []);
 
- 
-
-  useEffect(()=>{
-    FontFamilyies()
-  },[FontFamilys])
-
-
-
-
-  console.log("first",Editing , FontFamilys)
-  console.log("%%imageimagess",data )
+  console.log("first", Editing, FontFamilys);
+  console.log("%%imageimagess", data);
   return (
     <>
       <div className="container-fluid">
@@ -218,7 +214,7 @@ function LogoPanel() {
                   role="tabpanel"
                   aria-labelledby="v-pills-home-tab"
                 >
-                  <SVGLogo data={data} FinalLogoEditing={FinalLogoEditing}   />
+                  <SVGLogo data={data} FinalLogoEditing={FinalLogoEditing} />
                 </div>
                 <div
                   class="tab-pane fade"
@@ -231,15 +227,15 @@ function LogoPanel() {
                       CompanyName="Company Name"
                       name={Companyname}
                       data={data}
-                      onSubmitName={(e) =>  onhandlesubmit(e)}
+                      onSubmitName={(e) => onhandlesubmit(e)}
                     />
 
-                    <FontSize onSubmitSize = { (e) => onsizehandle(e) } />
-                    <FontFamily  
-                      FontFamilys={FontFamilys} 
+                    <FontSize onSubmitSize={(e) => onsizehandle(e)} />
+                    <FontFamily
+                      FontFamilys={FontFamilys}
                       Selected={Selected}
                       handlechange={handlechange}
-                      />
+                    />
                     <FontWeight />
                     <Fontstyle />
                     <Backgroundcolor />
@@ -253,13 +249,14 @@ function LogoPanel() {
                   aria-labelledby="v-pills-messages-tab"
                 >
                   <div class="editor-group-options">
-                    <CompanySlogan 
-                      name="Company Slogan" 
-                      slogan={Slogan} 
-                      data={data}   
-                      onSubmitSlogan={(e) => onhandlessubmit(e) } />
+                    <CompanySlogan
+                      name="Company Slogan"
+                      slogan={Slogan}
+                      data={data}
+                      onSubmitSlogan={(e) => onhandlessubmit(e)}
+                    />
                     {"  "}
-                    <FontSize2  onSubmitslogan = { (e) => handleslogan(e) } />
+                    <FontSize2 onSubmitslogan={(e) => handleslogan(e)} />
                     {"  "}
                     <FontFamily2 FontFamilys={FontFamilys} />
                     {"  "}
@@ -309,22 +306,21 @@ function LogoPanel() {
             </div>
             <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
               <div className="editor-col-3">
-                <div className ="gen-logo-sec">
-                  <div className ="generated-logo-preview generated-logo-preview1 generated-logo-preview-big">
-                      <LogoEditing 
-                        FinalLogoEditing={FinalLogoEditing} 
-                        Editing={Editing} 
-                        Names={Names} 
-                        Slogans={Slogans}
-                        Size={Size}
-                        sloganSize={sloganSize}
-                        
-                        />
-                        
+                <div className="gen-logo-sec">
+                  <div className="generated-logo-preview generated-logo-preview1 generated-logo-preview-big">
+                    <LogoEditing
+                      FinalLogoEditing={FinalLogoEditing}
+                      Editing={Editing}
+                      Names={Names}
+                      Slogans={Slogans}
+                      Size={Size}
+                      sloganSize={sloganSize}
+                      Selected={Selected}
+                    />
                   </div>
                 </div>
               </div>
-              </div> 
+            </div>
           </div>
         </div>
       </div>
