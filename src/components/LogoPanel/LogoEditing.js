@@ -8,7 +8,7 @@ const LogoEditing = ({
   sloganSize,
   Selected,
 }) => {
-  console.log("hhhheee", Size, sloganSize);
+  console.log("hhhheee", Size, sloganSize , Selected.label);
   const movingText = useRef({
     position: "relative",
     top: Math.ceil(Math.random() * 100),
@@ -34,7 +34,7 @@ const LogoEditing = ({
           {Names === " " ? (
             <p
               ref={movingText.current}
-              style={{ fontSize: Number(Size), fontFamily: Selected?.label }}
+              style={{ fontSize: Number(Size), fontFamily: String(Selected?.label) }}
               className="textshow"
             >
               {Editing?.company_name}
@@ -42,7 +42,7 @@ const LogoEditing = ({
           ) : (
             <p
               ref={movingText.current}
-              style={{ fontSize: Number(Size), fontFamily: Selected?.label }}
+              style={{ fontSize: Number(Size), fontFamily: String(Selected?.label) }}
               className="textshow"
             >
               {Names}
@@ -55,7 +55,7 @@ const LogoEditing = ({
               ref={movingText2.current}
               style={{
                 fontSize: Number(sloganSize),
-                fontFamily: Selected?.label,
+                // fontFamily: Selected?.label,
               }}
               className="textshow"
             >
@@ -66,7 +66,7 @@ const LogoEditing = ({
               ref={movingText2.current}
               style={{
                 fontSize: Number(sloganSize),
-                fontFamily: Selected?.label,
+                // fontFamily: Selected?.label,
               }}
               className="textshow"
             >

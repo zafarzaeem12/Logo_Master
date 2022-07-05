@@ -63,6 +63,7 @@ function Editor() {
   const [select, SetSelect] = useState([]);
   const [printchecked, Setprintchecked] = useState([]);
 
+// Category Api Start from here
   const CategoryApi = async () => {
     try {
       let { categories } = await getDataApi(`categories`);
@@ -76,7 +77,10 @@ function Editor() {
       setIsLoading(true);
     }
   };
+  // Category Api end here
 
+
+  // Logo Api with respect of Category_id Start from here
   const CategoriesByLogo = async (Selected) => {
     try {
       let item = Selected?.value;
@@ -88,7 +92,10 @@ function Editor() {
       setIsLoading(true);
     }
   };
+  // Logo Api with respect of Category_id end here
 
+
+  // Color Api with respect of Logo_id Start from here
   const colorIntgration = async (dat) => {
     try {
       let logocolor = dat?.id;
@@ -109,6 +116,46 @@ function Editor() {
       // navigate('../success',{ <Link to="/" /> })
     }
   };
+  // Color Api with respect of Logo_id end here
+
+  
+  // Category_id , Logo_id , Color_id , CompanyName , CompanySlogan as Payload Start here
+  const DataByCategory = async (
+    Selected,
+    styles,
+    printchecked,
+    Companyname,
+    Slogan
+  ) => {
+    try {
+      var category_id = Selected?.value;
+      var logo_id = styles?.id;
+      var color_id = printchecked?.id;
+      var company_name = Companyname;
+      var company_slogan = Slogan;
+
+      const payload = {
+        category_id,
+        logo_id,
+        color_id,
+        company_name,
+        company_slogan,
+      };
+      console.log("payload", payload);
+      let url = `https://devv74.myprojectstaging.com/logo-master/public/api/selected-logos`;
+      let methods = {
+        method: "POST",
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+        body: JSON.stringify(payload),
+      };
+      const api = await fetch(url, methods);
+      const response = await api.json();
+      toast.success(response);
+    } catch (error) {
+      toast.error("Something is Missing");
+    }
+  };
+  // Category_id , Logo_id , Color_id , CompanyName , CompanySlogan as Payload end here
 
   const handlechange = (Selected) => {
     console.log(Selected);
@@ -162,43 +209,7 @@ function Editor() {
     // e.preventDefault();
     return Setprintchecked(data);
   };
-
-  const DataByCategory = async (
-    Selected,
-    styles,
-    printchecked,
-    Companyname,
-    Slogan
-  ) => {
-    try {
-      var category_id = Selected?.value;
-      var logo_id = styles?.id;
-      var color_id = printchecked?.id;
-      var company_name = Companyname;
-      var company_slogan = Slogan;
-
-      const payload = {
-        category_id,
-        logo_id,
-        color_id,
-        company_name,
-        company_slogan,
-      };
-      console.log("payload", payload);
-      let url = `https://devv74.myprojectstaging.com/logo-master/public/api/selected-logos`;
-      let methods = {
-        method: "POST",
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-        body: JSON.stringify(payload),
-      };
-      const api = await fetch(url, methods);
-      const response = await api.json();
-      toast.success(response);
-    } catch (error) {
-      toast.error("Something is Missing");
-    }
-  };
-
+  
   const StepsContent = (step) => {
     switch (step) {
       case 0:

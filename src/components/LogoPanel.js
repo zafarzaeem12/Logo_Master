@@ -66,6 +66,7 @@ function LogoPanel() {
     Setslogansize(sloganSize);
   };
 
+  // Google Font Api with Key and supported data returns only start here
   const FontFamilyApiData = async () => {
     let apikey = "AIzaSyCSmTJkLEMFZMvF47raVkmL_YhKpgrTCrA";
     const url = await fetch(
@@ -74,7 +75,10 @@ function LogoPanel() {
     const { items } = await url.json();
     return items;
   };
+  // Google Font Api with Key and supported data returns only end here
 
+
+  // Google Font Api Integration with Logopanel start here
   const FontFamilyies = async (items) => {
     let FaFamily = await FontFamilyApiData(items);
     let datas1 = FaFamily?.filter((data) => {
@@ -101,6 +105,7 @@ function LogoPanel() {
 
     SetFontFamilys(options);
   };
+  // Google Font Api Integration with Logopanel end here
 
   useEffect(() => {
     FontFamilyies();
