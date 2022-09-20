@@ -11,6 +11,7 @@ import Priceing from "./components/Priceing";
 import LogoPanel from "./components/LogoPanel";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Dashbaord from "./components/Dashbaord";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route exact path="/login" element={<Login />}></Route>
           <Route exact path="/register" element={<Register />}></Route>
           <Route exact path="/logopanel" element={<LogoPanel />}></Route>
+          <Route exact path="/dashboard" element={<Dashbaord />}></Route>
           
         </Routes>
       </Router>

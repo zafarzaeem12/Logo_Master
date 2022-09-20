@@ -1765,7 +1765,7 @@ footer{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 218px;
+	width: 536px;
 	height: 62px;
 	background: var(--theme-color-1);
 	font-size: 30px;
@@ -2311,4 +2311,7 @@ footer{
   height:250px;
   margin: 0 auto;
 
+}
+.img34{
+  border-radius: 50%
 }

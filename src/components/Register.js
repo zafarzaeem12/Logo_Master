@@ -4,7 +4,16 @@ import img2 from '../images/login-abs-img-2.png'
 import img3 from '../images/index-banner-abs-3.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebookF , faSkype ,faLinkedin } from '@fortawesome/free-brands-svg-icons'
+import { useNavigate } from 'react-router-dom'
 function Register() {
+
+  const navigate = useNavigate();
+
+  const NavigateToRegister = (e) => {
+      e.preventDefault();
+      navigate("/login")
+  }
+
   return (
     <>
         <section class="login-sec inner-pg-banner about-banner">
@@ -22,7 +31,7 @@ function Register() {
               </div>
               <a href="#!" class="forget-btn">Forgot Password</a>
               <a href="#!" class="login-btn">Signup</a>
-              <p class="bottom-tagline">Already have an acount? <a href="#!">Login</a></p>	
+              <p  onClick={(e) => NavigateToRegister(e)} class="bottom-tagline">Already have an acount? Login</p>	
             </form>
             <ul class="socil-list list-unstyled">
             <li><a href="#!"><FontAwesomeIcon icon={faFacebookF} /></a></li>
