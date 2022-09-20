@@ -1,11 +1,11 @@
-import rootReducer from "./reducer/index";
+import rootReducer from "./reducer";
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
-
-const enhancer = compose(applyMiddleware(thunk, logger));
+import { composeWithDevTools } from 'redux-devtools-extension'
+const enhancer = compose(composeWithDevTools(applyMiddleware(thunk, logger)));
 
 const persistConfig = {
   key: "root",
@@ -14,7 +14,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-let store = createStore(persistedReducer, enhancer);
+const store = createStore(persistedReducer, enhancer);
 export let persistor = persistStore(store);
 
 export default store;

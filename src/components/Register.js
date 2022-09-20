@@ -31,7 +31,7 @@ function Register() {
               </div>
               <a href="#!" class="forget-btn">Forgot Password</a>
               <a href="#!" class="login-btn">Signup</a>
-              <p  onClick={(e) => NavigateToRegister(e)} class="bottom-tagline">Already have an acount? Login</p>	
+              <p style={{cursor: 'pointer'}}  onClick={(e) => NavigateToRegister(e)} class="bottom-tagline behave">Already have an acount? Login</p>	
             </form>
             <ul class="socil-list list-unstyled">
             <li><a href="#!"><FontAwesomeIcon icon={faFacebookF} /></a></li>

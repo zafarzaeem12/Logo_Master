@@ -85,7 +85,7 @@ function Login() {
                     className="login-btn"
                     isSignedIn={true}
                 />
-              <p onClick={(e) => NavigateToRegister(e)} className="bottom-tagline">Dont have an acount? Signup </p>	
+              <p style={{cursor: 'pointer'}} onClick={(e) => NavigateToRegister(e)} className="bottom-tagline behave">Dont have an acount? Signup </p>	
             </form>
             <ul className="socil-list list-unstyled">
               <li><a href="#!"><FontAwesomeIcon icon={faFacebookF} /></a></li>
